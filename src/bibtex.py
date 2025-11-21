@@ -1,16 +1,12 @@
-
-
-
+import bibtexparser
 
 
 class Entry:
-    reference_type: str = ""
-    identifier: str = ""
-    values: dict[str, str] = {}
 
     def __init__(self, identifier, reference_type):
         self.reference_type = reference_type
         self.identifier = identifier
+        self.values: dict[str, str] = {}
 
     def add_value(self, value_type, value):
         self.values[value_type] = value
@@ -36,12 +32,9 @@ class Entry:
 
 
 class Bibtex:
-    entries: list[Entry] = []
-    current_iterator_index = 0
-    filename = ""
-
     def __init__(self, filename):
         self.filename = filename
+        self.entries: list[Entry] = []
         self._read()
 
     def __iter__(self):
@@ -65,7 +58,24 @@ class Bibtex:
                 self.entries.remove(entry)
 
     def _read(self):
-        pass
+        try:
+            f = open(self.filename)
+        except FileNotFoundError:
+            print("File not found")
+            return
+        bib_string = f.read()
+        f.close()
+
+        library = bibtexparser.parse_string(bib_string)
+
+        for parsed_entry in library.entries:
+            entry = None
+            entry = Entry(parsed_entry.key, parsed_entry.entry_type)
+            for field in parsed_entry.fields:
+                entry.add_value(field.key, field.value)
+            self.entries.append(entry)
+
+
 
     def save(self):
         f = open(self.filename, "w")
