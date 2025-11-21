@@ -1,25 +1,35 @@
+'''
+This file provides methods for handling the content (a.k.a references) of bibtex files
+'''
+
 import bibtexparser # type: ignore
 
-
 class Entry:
+    """ Class representing a single entry (a.k.a reference) in bib file  """
+
     def __init__(self, identifier, reference_type):
         self.reference_type = reference_type
         self.identifier = identifier
         self.values: dict[str, str] = {}
 
     def add_value(self, value_type, value):
+        """Assigns given value to wanted value type (a.k.a field)"""
         self.values[value_type] = value
 
     def remove_value(self, value_type):
+        """Removes value assigned to wanted value type" (a.k.a field)"""
         self.values.pop(value_type)
 
     def get_value(self, value_type):
+        """Returns the value of wanted value type (a.k.a field)"""
         return self.values[value_type]
 
     def get_identifier(self):
+        """Returns the identifier of this entry"""
         return self.identifier
 
     def set_identifier(self, identifier):
+        """Sets wanted identifier as this entry's identifier"""
         self.identifier = identifier
 
     def __str__(self):
@@ -34,6 +44,8 @@ class Entry:
 
 
 class Bibtex:
+    """ Class for handling the entries in bibtex file"""
+
     def __init__(self):
         self.entries: list[Entry] = []
         self.current_iterator_index = 0
@@ -51,20 +63,24 @@ class Bibtex:
             raise StopIteration from exc
 
     def add(self, entry):
+        """Adds an entry (a.k.a reference) to list of all entries in bibtex file"""
         self.entries.append(entry)
 
     def remove(self, identifier):
+        """Removes an entry (a.k.a reference) with matching identifier"""
         for entry in self.entries:
             if entry.get_identifier() == identifier:
                 self.entries.remove(entry)
 
     def get(self, identifier):
+        """Returns an entry (a.k.a reference) with matching identifier"""
         for entry in self.entries:
             if entry.get_identifier() == identifier:
                 return entry
         return None
 
     def read(self, bib_string):
+        """Parses entries (a.k.a references) from a bibtex string to entries"""
         library = bibtexparser.parse_string(bib_string)
 
         for parsed_entry in library.entries:
