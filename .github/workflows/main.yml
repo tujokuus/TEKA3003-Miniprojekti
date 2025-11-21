@@ -20,6 +20,8 @@ jobs:
         run: pip install poetry
       - name: Install dependencies
         run: poetry install --no-root
+      - name: Install pytest
+        run: pip install pytest
       - name: Run tests
         run: python -m pytest
       - name: Pylint
