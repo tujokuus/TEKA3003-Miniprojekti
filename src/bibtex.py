@@ -1,8 +1,7 @@
-import bibtexparser
+import bibtexparser # type: ignore
 
 
 class Entry:
-
     def __init__(self, identifier, reference_type):
         self.reference_type = reference_type
         self.identifier = identifier
@@ -13,6 +12,9 @@ class Entry:
 
     def remove_value(self, value_type):
         self.values.pop(value_type)
+
+    def get_value(self, value_type):
+        return self.values[value_type]
 
     def get_identifier(self):
         return self.identifier
@@ -32,10 +34,9 @@ class Entry:
 
 
 class Bibtex:
-    def __init__(self, filename):
-        self.filename = filename
+    def __init__(self):
         self.entries: list[Entry] = []
-        self._read()
+        self.current_iterator_index = 0
 
     def __iter__(self):
         self.current_iterator_index = 0
@@ -57,15 +58,13 @@ class Bibtex:
             if entry.get_identifier() == identifier:
                 self.entries.remove(entry)
 
-    def _read(self):
-        try:
-            f = open(self.filename)
-        except FileNotFoundError:
-            print("File not found")
-            return
-        bib_string = f.read()
-        f.close()
+    def get(self, identifier):
+        for entry in self.entries:
+            if entry.get_identifier() == identifier:
+                return entry
+        return None
 
+    def read(self, bib_string):
         library = bibtexparser.parse_string(bib_string)
 
         for parsed_entry in library.entries:
@@ -74,13 +73,6 @@ class Bibtex:
             for field in parsed_entry.fields:
                 entry.add_value(field.key, field.value)
             self.entries.append(entry)
-
-
-
-    def save(self):
-        f = open(self.filename, "w")
-        f.write(str(self))
-        f.close()
 
     def __str__(self):
         r = ""

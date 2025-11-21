@@ -20,5 +20,7 @@ jobs:
         run: pip install poetry
       - name: Install dependencies
         run: poetry install --no-root
+      - name: Run tests
+        run: python -m pytest
       - name: Pylint
         run: poetry run pylint src

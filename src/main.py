@@ -2,24 +2,34 @@
 DOC
 '''
 
+import sys
 import bibtex
 
 if __name__ == "__main__":
-    bib = bibtex.Bibtex("testi.bib")
+    # Parse arguments
+    if len(sys.argv) <= 1:
+        print(f"Usage: {sys.argv[0]} <file.bib>")
+        sys.exit(1)
+    filename = sys.argv[1]
 
-    entry = bibtex.Entry("testid", "article")
-    entry.add_value("author", "matti nykänen")
-    entry.add_value("title", "emt")
-    entry.add_value("year", "1990")
-    entry.add_value("journal", "American Educator")
-    bib.add(entry)
+    # Attempt to load bibtex from provided file
+    bib = bibtex.Bibtex()
+    try:
+        with open(filename, "r", encoding="utf-8") as file:
+            bib_string = file.read()
+            bib.read(bib_string)
+            print("Warning: provided bibtex file not found, generating one when saved")
+    except FileNotFoundError:
+        print("File not found")
+        sys.exit(1)
 
-    entry2 = bibtex.Entry("toinenTestid", "article")
-    entry2.add_value("author", "Jyrki")
-    entry2.add_value("title", "toinen emt")
-    entry2.add_value("year", "2007")
-    entry2.add_value("journal", "Iltalehti")
-    bib.add(entry2)
+    # Print bib contents
+    print(bib)
 
-    print(str(bib))
-    bib.save()
+    # Save bibtex (a.k.a database) to file
+    try:
+        with open(filename, "w", encoding="utf-8") as file:
+            file.write(str(bib))
+    except IOError:
+        print("Could not save file!")
+        sys.exit(1)
