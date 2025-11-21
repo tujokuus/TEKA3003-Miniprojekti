@@ -25,9 +25,12 @@ class Entry:
         self.identifier = identifier
 
     def __str__(self):
-        ret = f"@{self.reference_type}{{{self.identifier}\n"
-        for key, value in self.values.items():
-            ret += f"    {key} = {{{value}}}\n"
+        ret = f"@{self.reference_type}{{{self.identifier},\n"
+        for index, (key, value) in enumerate(self.values.items()):
+            comma = ""
+            if index != len(self.values) - 1:
+                comma = ","
+            ret += f"    {key} = {{{value}}}{comma}\n"
         ret += "}"
         return ret
 
@@ -35,8 +38,10 @@ class Entry:
 class Bibtex:
     entries: list[Entry] = []
     current_iterator_index = 0
+    filename = ""
 
-    def __init__(self, _filename):
+    def __init__(self, filename):
+        self.filename = filename
         self._read()
 
     def __iter__(self):
@@ -60,9 +65,18 @@ class Bibtex:
                 self.entries.remove(entry)
 
     def _read(self):
-        # TODO: Read and parse provided file
         pass
 
     def save(self):
-        # TODO: Write and parse
-        pass
+        f = open(self.filename, "w")
+        f.write(str(self))
+        f.close()
+
+    def __str__(self):
+        r = ""
+        length = len(self.entries)
+        for index, entry in enumerate(self.entries):
+            r += str(entry)
+            if index != length - 1:
+                r += "\n\n"
+        return r
