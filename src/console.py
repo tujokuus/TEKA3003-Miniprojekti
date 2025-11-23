@@ -13,7 +13,7 @@ class Console:
     def ask_new_source(self):
         epavarma = True
 
-        while(epavarma):
+        while epavarma:
             #Alustetaan lähteen tiedot
             src_key         = ""
             src_title       = ""
@@ -50,7 +50,7 @@ class Console:
     def __ask_key(self):
         invalid = True
 
-        while(invalid):
+        while invalid:
             print("Lisaa lähteen avain: ")
             src_key = input('=> ')
 
@@ -73,7 +73,7 @@ class Console:
     def __ask_title(self):
         invalid = True
 
-        while(invalid):
+        while invalid:
             print("Lisaa lähteen nimi: ")
             src_title = input('=> ')
 
