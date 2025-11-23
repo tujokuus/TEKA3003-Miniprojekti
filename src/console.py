@@ -40,7 +40,7 @@ class Console:
         print("Tallennetaan lähde")
         entry = bibtex.Entry(src_key, "article")
         entry.add_value("title", src_title)
-        #self.bib.add(entry)
+        self.bib.add(entry)
         print(str(entry))
 
     #Kysytään ja tarkistetaan annettava avain lähteelle
