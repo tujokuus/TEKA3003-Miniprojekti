@@ -1,14 +1,14 @@
 import bibtex
 
-#Console olio kysyy käyttäjältä syötettävän lähteen tiedot, 
+#Console olio kysyy käyttäjältä syötettävän lähteen tiedot,
 # tallentaa ne dict olioon, ja lähettää ne bibtex oliolle
 #lahdeAvaimet halutaan Array/List muodossa
 class Console:
     def __init__(self, bib_olio, lahde_avaimet):
         self.bib = bib_olio
-        #Tarvitsemme listan jo olemassa olevista lähteistä, 
+        #Tarvitsemme listan jo olemassa olevista lähteistä,
         # jotta voimme vertailla niitä uuteen lisättävään (esim. samannimiset avaimet)
-        self.lahteet = lahdeAvaimet
+        self.lahteet = lahde_avaimet
 
     def ask_new_source(self):
         epavarma = True
@@ -55,7 +55,7 @@ class Console:
             src_key = input('=> ')
 
             duplikaatti = False
-            for lahde in lahde_avaimet:
+            for lahde in self.lahteet:
                 if lahde.strip() == src_key:
                     duplikaatti = True
 
@@ -80,6 +80,6 @@ class Console:
             if src_title.strip() == "":
                 print("Syotetty nimi on tyhjä, lisää parempi")
             else:
-                invalid = False      
+                invalid = False
 
         return src_title
