@@ -1,32 +1,34 @@
 import bibtex
 
-#Console olio kysyy käyttäjältä syötettävän lähteen tiedot, tallentaa ne dict olioon, ja lähettää ne bibtex oliolle
+#Console olio kysyy käyttäjältä syötettävän lähteen tiedot, 
+# tallentaa ne dict olioon, ja lähettää ne bibtex oliolle
 #lahdeAvaimet halutaan Array/List muodossa
 class Console:
-    def __init__(self, bibOlio, lahdeAvaimet):
-        self.bib = bibOlio
-        #Tarvitsemme listan jo olemassa olevista lähteistä, jotta voimme vertailla niitä uuteen lisättävään (esim. samannimiset avaimet)
+    def __init__(self, bib_olio, lahde_avaimet):
+        self.bib = bib_olio
+        #Tarvitsemme listan jo olemassa olevista lähteistä, 
+        # jotta voimme vertailla niitä uuteen lisättävään (esim. samannimiset avaimet)
         self.lahteet = lahdeAvaimet
 
-    def ask_new_source():
+    def ask_new_source(self):
         epavarma = True
 
         while(epavarma):
             #Alustetaan lähteen tiedot
             src_key         = ""
             src_title       = ""
-            src_author      = ""
-            src_date        = ""
-            src_bookTitle   = ""
-            src_volume      = 0
-            src_pages       = ""
-            src_publisher   = ""
-            src_doi         = ""
+            #src_author      = ""
+            #src_date        = ""
+            #src_bookTitle   = ""
+            #src_volume      = 0
+            #src_pages       = ""
+            #src_publisher   = ""
+            #src_doi         = ""
 
             #Kysytään käyttäjältä konsolissa lähteen tiedot
             print("Alustetaan uusi lähde:")
-            src_key = __ask_key()
-            src_title = __ask_title()
+            src_key = self.__ask_key()
+            src_title = self.__ask_title()
 
             #Kysymme käyttäjältä, onko hän varma, että annetut arvot ovat oikein
             print("Olemme lisäämässä seuraavan lähteen, onko se oikein?")
@@ -45,7 +47,7 @@ class Console:
 
     #Kysytään ja tarkistetaan annettava avain lähteelle
     #REQUIRED
-    def __ask_key():
+    def __ask_key(self):
         invalid = True
 
         while(invalid):
@@ -53,7 +55,7 @@ class Console:
             src_key = input('=> ')
 
             duplikaatti = False
-            for lahde in lahdeAvaimet:
+            for lahde in lahde_avaimet:
                 if lahde.strip() == src_key:
                     duplikaatti = True
 
@@ -68,14 +70,14 @@ class Console:
 
     #Kysytään ja tarkistetaan annettava lähteen nimi
     #REQUIRED
-    def __ask_title():
+    def __ask_title(self):
         invalid = True
 
         while(invalid):
             print("Lisaa lähteen nimi: ")
-            src_key = input('=> ')
+            src_title = input('=> ')
 
-            if src_key.strip() == "":
+            if src_title.strip() == "":
                 print("Syotetty nimi on tyhjä, lisää parempi")
             else:
                 invalid = False      
