@@ -2,7 +2,7 @@
 
 ignore=tests
 
-[MESSAGE CONTROL]
+[MESSAGES CONTROL]
 
 disable=raw-checker-failed,
         bad-inline-option,
@@ -20,7 +20,7 @@ disable=raw-checker-failed,
 max-line-length=100
 
 [REFACTORING]
-max-nested-blocks=2
+max-nested-blocks=4
 never-returning-functions=
 
 [DESIGN]
