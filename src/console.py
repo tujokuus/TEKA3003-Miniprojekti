@@ -27,30 +27,20 @@ class Console:
             src_key = ask_key()
             src_title = ask_title()
 
-            #Sijoitetaan lähteen tiedot dict olioon
-            lahde = {
-                "key":          src_key,
-                "title":        src_nimi,
-                "auhtor":       src_author,
-                "date":         src_date,
-                "book_title":   src_bookTitle,
-                "volume":       src_volume,
-                "pages":        src_pages,
-                "publisher":    src_publisher,
-                "DOI":          src_doi
-            }
-
             #Kysymme käyttäjältä, onko hän varma, että annetut arvot ovat oikein
             print("Olemme lisäämässä seuraavan lähteen, onko se oikein?")
-            print(lahde)
+            print("key", src_key)
+            print("title", src_title)
             confirmation = input('[Y/N]')
             if confirmation.strip().upper() == "Y":
                 epavarma = False
 
         #Viedään hyvaksytty dict olio tallennettavaksi bibtex oliolle
         print("Tallennetaan lähde")
-        #self.bib.add(lahde)
-
+        entry = bibtex.Entry(src_key, "article")
+        entry.add_value("title", src_title)
+        #self.bib.add(entry)
+        print(str(entry))
 
     #Kysytään ja tarkistetaan annettava avain lähteelle
     #REQUIRED
