@@ -1,11 +1,12 @@
 import bibtex
 
 #Console olio kysyy käyttäjältä syötettävän lähteen tiedot, tallentaa ne dict olioon, ja lähettää ne bibtex oliolle
+#lahdeAvaimet halutaan Array/List muodossa
 class Console:
     def __init__(self, bibOlio, lahdeAvaimet):
         self.bib = bibOlio
         #Tarvitsemme listan jo olemassa olevista lähteistä, jotta voimme vertailla niitä uuteen lisättävään (esim. samannimiset avaimet)
-        self.lahteet = lahdeAvaimet 
+        self.lahteet = lahdeAvaimet
 
     def ask_new_source():
         epavarma = True
@@ -24,8 +25,8 @@ class Console:
 
             #Kysytään käyttäjältä konsolissa lähteen tiedot
             print("Alustetaan uusi lähde:")
-            src_key = ask_key()
-            src_title = ask_title()
+            src_key = __ask_key()
+            src_title = __ask_title()
 
             #Kysymme käyttäjältä, onko hän varma, että annetut arvot ovat oikein
             print("Olemme lisäämässä seuraavan lähteen, onko se oikein?")
@@ -44,7 +45,7 @@ class Console:
 
     #Kysytään ja tarkistetaan annettava avain lähteelle
     #REQUIRED
-    def ask_key():
+    def __ask_key():
         invalid = True
 
         while(invalid):
@@ -67,7 +68,7 @@ class Console:
 
     #Kysytään ja tarkistetaan annettava lähteen nimi
     #REQUIRED
-    def ask_title():
+    def __ask_title():
         invalid = True
 
         while(invalid):

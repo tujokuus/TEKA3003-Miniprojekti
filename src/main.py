@@ -4,6 +4,7 @@ DOC
 
 import sys
 import bibtex
+import console
 
 if __name__ == "__main__":
     # Parse arguments
@@ -25,6 +26,10 @@ if __name__ == "__main__":
 
     # Print bib contents
     print(bib)
+
+    #Aktivoidaan konsoli (kysytään käyttäjältä uusi tiedosto)
+    konsoli = console.Console(bib , [])
+    konsoli.ask_new_source()
 
     # Save bibtex (a.k.a database) to file
     try:
