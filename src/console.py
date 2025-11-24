@@ -32,8 +32,8 @@ class Console:
 
             #Kysymme käyttäjältä, onko hän varma, että annetut arvot ovat oikein
             print("Olemme lisäämässä seuraavan lähteen, onko se oikein?")
-            print("key", src_key)
-            print("title", src_title)
+            print("key:", src_key)
+            print("title:", src_title)
             confirmation = input('[Y/N]')
             if confirmation.strip().upper() == "Y":
                 epavarma = False
