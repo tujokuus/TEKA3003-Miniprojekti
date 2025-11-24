@@ -45,9 +45,9 @@ class Console:
         self.bib.add(entry)
         print(str(entry))
 
-    def to_string(self):
-
-        return "Olen konsoli olio :D"
+    #Päivitetään avaimet
+    def update_keys(self, uudet_avaimet):
+        self.lahteet = uudet_avaimet
 
     #Kysytään ja tarkistetaan annettava avain lähteelle
     #REQUIRED
