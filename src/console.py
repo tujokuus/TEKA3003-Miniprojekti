@@ -45,6 +45,10 @@ class Console:
         self.bib.add(entry)
         print(str(entry))
 
+    def to_string(self):
+
+        return "Olen konsoli olio :D"
+
     #Kysytään ja tarkistetaan annettava avain lähteelle
     #REQUIRED
     def __ask_key(self):
