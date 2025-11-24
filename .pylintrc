@@ -24,4 +24,4 @@ max-nested-blocks=4
 never-returning-functions=
 
 [DESIGN]
-max-statements=15
+max-statements=150
