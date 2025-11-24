@@ -9,7 +9,11 @@ Tähän voi lisätä projektin asennusvaiheet.
 
 ▶️ Käyttöohje
 
-Tähän voi lisätä käyttöesimerkit ja komennot.
+Käynnistä asenna poetry dependencies komennolla poetry install
+
+Aktivoi virtuaaliympäristö poetry shell komennolla
+
+Käynnistä ohjelma antamalla juurihakemistossa komento python src/main.py *tähän .bib tiedosto*
 
 ✅ Definition of Done
 
