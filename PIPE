@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "C:\kurssit\ohtu\TEKA3003-Miniprojekti\src\main.py", line 6, in <module>
+    import bibtex
+  File "C:\kurssit\ohtu\TEKA3003-Miniprojekti\src\bibtex.py", line 5, in <module>
+    import bibtexparser # type: ignore
+    ^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'bibtexparser'
