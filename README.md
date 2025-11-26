@@ -5,7 +5,11 @@ Backlog: https://docs.google.com/spreadsheets/d/1MlOP76wqw3v2JijAVQKpA10mQwhNl-1
 
 📦 Asennusohje
 
-Tähän voi lisätä projektin asennusvaiheet.
+Käynnistä asenna poetry dependencies komennolla poetry install
+
+Aktivoi virtuaaliympäristö poetry shell komennolla
+
+Käynnistä ohjelma antamalla juurihakemistossa komento python src/main.py *tähän .bib tiedosto*
 
 ▶️ Käyttöohje
 
