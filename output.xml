@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.3.2 (Python 3.14.0 on win32)" generated="2025-11-26T13:01:34.667182" rpa="false" schemaversion="5">
+<suite id="s1" name="Tests" source="C:\Users\tuomas.kuusisto_cens\opiskelu\kurssit\ohjelmistotuotanto\miniprojekti\TEKA3003-Miniprojekti\src\tests">
+<suite id="s1-s1" name="Add Source" source="C:\Users\tuomas.kuusisto_cens\opiskelu\kurssit\ohjelmistotuotanto\miniprojekti\TEKA3003-Miniprojekti\src\tests\add_source.robot">
+<test id="s1-s1-t1" name="Add Source With Valid Source Key And Source Name" line="6">
+<kw name="Create Source And Input Save Command" type="SETUP">
+<msg time="2025-11-26T13:01:34.797920" level="FAIL">No keyword with name 'Create Source And Input Save Command' found.</msg>
+<status status="FAIL" start="2025-11-26T13:01:34.797803" elapsed="0.000265">No keyword with name 'Create Source And Input Save Command' found.</status>
+</kw>
+<status status="FAIL" start="2025-11-26T13:01:34.795038" elapsed="0.004412">Setup failed:
+No keyword with name 'Create Source And Input Save Command' found.</status>
+</test>
+<status status="FAIL" start="2025-11-26T13:01:34.790612" elapsed="0.010288"/>
+</suite>
+<status status="FAIL" start="2025-11-26T13:01:34.670119" elapsed="0.132049"/>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="1" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat name="Tests" id="s1" pass="0" fail="1" skip="0">Tests</stat>
+<stat name="Add Source" id="s1-s1" pass="0" fail="1" skip="0">Tests.Add Source</stat>
+</suite>
+</statistics>
+<errors>
+<msg time="2025-11-26T13:01:34.793566" level="WARN">Imported resource file 'C:\Users\tuomas.kuusisto_cens\opiskelu\kurssit\ohjelmistotuotanto\miniprojekti\TEKA3003-Miniprojekti\src\tests\resource.robot' is empty.</msg>
+</errors>
+</robot>
