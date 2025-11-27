@@ -17,18 +17,24 @@ class StubIO:
 class TestConsole(unittest.TestCase):
     def setUp(self):
         self.bib = bibtex.Bibtex()
+        entry = bibtex.Entry("foo", "article")
+        entry.add_value("title", "Testi artikkeli")
+        self.bib.add(entry)
 
     def test_add_new_source(self):
         stubio = StubIO(["baa", "Wise works by Luke", "Y"])
-        konsoli = console.Console(self.bib, ["foo"], stubio)
+        konsoli = console.Console(self.bib, stubio)
         konsoli.ask_new_source()
         #Testaamme että lähteen liittämis tapahtuma sujuu halutulla tavalla
         #Onko saaduissa konsoli outputeissa tallenetaan
         self.assertIn("Tallennetaan lähde", stubio.outputs)
 
     def test_add_already_exisiting_key(self):
-        stubio = StubIO(["baa", "foo", "Wise works by Luke", "Y"])
-        konsoli = console.Console(self.bib, ["baa"], stubio)
+        #Testiohjelma suuttuu jos inputit "jäävät kesken", täten
+        #lisäämme oikean arvon ja suoritamme lisäystapahtuman loppuun
+        #virheellisen syötön annon jälkeen
+        stubio = StubIO(["foo", "baa", "Wise works by Luke", "Y"])
+        konsoli = console.Console(self.bib, stubio)
         konsoli.ask_new_source()
 
         self.assertTrue(
@@ -36,8 +42,8 @@ class TestConsole(unittest.TestCase):
         )
 
     def test_add_empty_key(self):
-        stubio = StubIO(["", "foo", "Wise works by Luke", "Y"])
-        konsoli = console.Console(self.bib, ["baa"], stubio)
+        stubio = StubIO(["", "baa", "Wise works by Luke", "Y"])
+        konsoli = console.Console(self.bib, stubio)
         konsoli.ask_new_source()
 
         self.assertTrue(
@@ -45,8 +51,8 @@ class TestConsole(unittest.TestCase):
         )
 
     def test_add_empty_title(self):
-        stubio = StubIO(["bar", "", "Wise works", "Y"])
-        konsoli = console.Console(self.bib, ["foo"], stubio)
+        stubio = StubIO(["bar", "", "Wise works by Luke", "Y"])
+        konsoli = console.Console(self.bib, stubio)
         konsoli.ask_new_source()
 
         self.assertTrue(

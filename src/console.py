@@ -12,11 +12,10 @@ class KonsoliIO:
 # tallentaa ne dict olioon, ja lähettää ne bibtex oliolle
 #lahdeAvaimet halutaan Array/List muodossa
 class Console:
-    def __init__(self, bib_olio, lahde_avaimet, konsoli_io):
+    def __init__(self, bib_olio, konsoli_io):
         self.bib = bib_olio
         #Tarvitsemme listan jo olemassa olevista lähteistä,
         # jotta voimme vertailla niitä uuteen lisättävään (esim. samannimiset avaimet)
-        self.lahteet = lahde_avaimet
         self.konsoli_io = konsoli_io
 
     def ask_new_source(self):
@@ -54,9 +53,9 @@ class Console:
         self.bib.add(entry)
         self.konsoli_io.kirjoita(str(entry))
 
-    #Päivitetään avaimet
-    def update_keys(self, uudet_avaimet):
-        self.lahteet = uudet_avaimet
+    #Päivitetään tietokanta
+    def update_bib(self, uusi_bib):
+        self.bib = uusi_bib
 
     #Kysytään ja tarkistetaan annettava avain lähteelle
     #REQUIRED
@@ -68,9 +67,8 @@ class Console:
             src_key = self.konsoli_io.lue('=> ')
 
             duplikaatti = False
-            for lahde in self.lahteet:
-                if lahde.strip() == src_key:
-                    duplikaatti = True
+            if self.bib.get(src_key):
+                duplikaatti = True
 
             if duplikaatti:
                 self.konsoli_io.kirjoita("Syotetty avain on jo olemassa, lisää parempi")
