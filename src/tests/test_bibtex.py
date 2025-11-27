@@ -83,3 +83,41 @@ class TestBibtex(unittest.TestCase):
         self.assertEqual(len(bib.search("emt")), 2)
         self.assertEqual(len(bib.search("emt", "title")), 1)
     
+    def test_sort(self):
+        bib_content = """@article{toinenTestid,
+    author = {Jyrki},
+    title = {toinen emt},
+    year = {2007},
+    journal = {Iltalehti}
+}
+
+@article{testid,
+    author = {matti nykänen},
+    title = {testidataa},
+    year = {1990},
+    journal = {American Educator},
+    hyehee = {emt}
+}
+
+@article{kolmasTestId,
+    author = {matti meikäläinen},
+    title = {Meikäläisen harkkatyö},
+    year = {1995}
+}
+"""
+        bib = bibtex.Bibtex()
+        bib.read(bib_content)
+        ordered_by_year = bib.sort("year")
+        ordered_by_author = bib.sort("author")
+        ordered_by_journal = bib.sort("journal")
+        ordered_by_journal_desc = bib.sort("journal", desc=True)
+
+        self.assertEqual(ordered_by_year[0].get_value("year"), "1990")
+        self.assertEqual(ordered_by_year[2].get_value("year"), "2007")
+        self.assertEqual(ordered_by_author[1].get_value("author"), "matti meikäläinen")
+        self.assertEqual(ordered_by_author[2].get_value("author"), "matti nykänen")
+        
+        # Test for sorting by missing fields always getting sorted to last place
+        self.assertEqual(ordered_by_journal[2].get_value("title"), "Meikäläisen harkkatyö")
+        self.assertEqual(ordered_by_journal_desc[2].get_value("title"), "Meikäläisen harkkatyö")
+        

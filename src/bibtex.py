@@ -127,17 +127,20 @@ class Bibtex:
         even if sorting in descending order.
         The sort is in ascending order by default, but this can be changed by argument `desc`.
         """
-        
+
         with_value_type = []
         without_value_type = []
         for entry in self.entries:
             try:
                 entry.get_value(value_type)
                 with_value_type.append(entry)
-            except:
+            except KeyError as _exc:
                 without_value_type.append(entry)
 
-        sorted_entries = sorted(with_value_type, key=lambda entry: entry.get_value(value_type), reverse=desc)
+        def key(entry):
+            return entry.get_value(value_type).strip().lower()
+        sorted_entries = sorted(with_value_type, key=key , reverse=desc)
+
         return sorted_entries + without_value_type
 
 
