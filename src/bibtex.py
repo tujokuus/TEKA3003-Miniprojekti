@@ -120,6 +120,26 @@ class Bibtex:
                 continue
         return found
 
+    def sort(self, value_type: str, desc: bool = False):
+        """
+        Sorts entires based on value_type and returns them in a list.
+        If an entry has no value for given value_type, it will get sorted last, in no defined order,
+        even if sorting in descending order.
+        The sort is in ascending order by default, but this can be changed by argument `desc`.
+        """
+        
+        with_value_type = []
+        without_value_type = []
+        for entry in self.entries:
+            try:
+                entry.get_value(value_type)
+                with_value_type.append(entry)
+            except:
+                without_value_type.append(entry)
+
+        sorted_entries = sorted(with_value_type, key=lambda entry: entry.get_value(value_type), reverse=desc)
+        return sorted_entries + without_value_type
+
 
     def __str__(self):
         r = ""
