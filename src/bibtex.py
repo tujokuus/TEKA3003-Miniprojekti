@@ -11,6 +11,7 @@ class Entry:
         self.reference_type = reference_type
         self.identifier = identifier
         self.values: dict[str, str] = {}
+        self.current_iterator_index = 0
 
     def add_value(self, value_type, value):
         """Assigns given value to wanted value type (a.k.a field)"""
@@ -24,6 +25,10 @@ class Entry:
         """Returns the value of wanted value type (a.k.a field)"""
         return self.values[value_type]
 
+    def get_value_types(self):
+        """Returns a list of all value types contained in this entry"""
+        return self.values.keys()
+
     def get_identifier(self):
         """Returns the identifier of this entry"""
         return self.identifier
@@ -33,6 +38,7 @@ class Entry:
         self.identifier = identifier
 
     def __str__(self):
+        """Outputs formatted bibtex"""
         ret = f"@{self.reference_type}{{{self.identifier},\n"
         for index, (key, value) in enumerate(self.values.items()):
             comma = ""
@@ -44,7 +50,7 @@ class Entry:
 
 
 class Bibtex:
-    """ Class for handling the entries in bibtex file"""
+    """Class for handling the entries in bibtex file"""
 
     def __init__(self):
         self.entries: list[Entry] = []
@@ -89,6 +95,30 @@ class Bibtex:
             for field in parsed_entry.fields:
                 entry.add_value(field.key, field.value)
             self.entries.append(entry)
+
+    def search(self, search_term, value_type = None):
+        """
+        Searches for entries by value type and its value.
+        The search term is not case sensitive.
+        If value type is omitted or set to None, the search term is searched from all values.
+
+        Returns a list of found entries.
+        """
+        found = []
+        processed_search_term = search_term.strip().lower()
+        for entry in self.entries:
+            try:
+                if value_type == None:
+                    for value_type in entry.get_value_types():
+                        if processed_search_term in entry.get_value(value_type).lower():
+                            if not (entry in found):
+                                found.append(entry)
+                if processed_search_term in entry.get_value(value_type).lower():
+                    found.append(entry)
+            except KeyError as exc:
+                continue
+        return found
+
 
     def __str__(self):
         r = ""
