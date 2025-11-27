@@ -96,7 +96,7 @@ class Bibtex:
                 entry.add_value(field.key, field.value)
             self.entries.append(entry)
 
-    def search(self, search_term, value_type = None):
+    def search(self, search_term: str, value_type: str | None = None):
         """
         Searches for entries by value type and its value.
         The search term is not case sensitive.
@@ -107,15 +107,16 @@ class Bibtex:
         found = []
         processed_search_term = search_term.strip().lower()
         for entry in self.entries:
+            if value_type is None:
+                for value_type2 in entry.get_value_types():
+                    if processed_search_term in entry.get_value(value_type2).lower():
+                        found.append(entry)
+                        break
+                continue
             try:
-                if value_type == None:
-                    for value_type in entry.get_value_types():
-                        if processed_search_term in entry.get_value(value_type).lower():
-                            if not (entry in found):
-                                found.append(entry)
                 if processed_search_term in entry.get_value(value_type).lower():
                     found.append(entry)
-            except KeyError as exc:
+            except KeyError as _exc:
                 continue
         return found
 

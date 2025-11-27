@@ -60,4 +60,26 @@ class TestBibtex(unittest.TestCase):
     year = {1990},
     journal = {American Educator}
 }""")
+        
+    def test_search(self):
+        bib_content = """@article{toinenTestid,
+    author = {Jyrki},
+    title = {toinen emt},
+    year = {2007},
+    journal = {Iltalehti}
+}
+
+@article{testid,
+    author = {matti nykänen},
+    title = {testidataa},
+    year = {1990},
+    journal = {American Educator},
+    hyehee = {emt}
+}
+"""
+        bib = bibtex.Bibtex()
+        bib.read(bib_content)
+        self.assertEqual(bib.search("matti")[0].get_identifier(), "testid")
+        self.assertEqual(len(bib.search("emt")), 2)
+        self.assertEqual(len(bib.search("emt", "title")), 1)
     
