@@ -4,6 +4,26 @@ This file provides methods for handling the content (a.k.a references) of bibtex
 
 import bibtexparser # type: ignore
 
+class Fields:
+    """ Class for handling the json file containing referencce types  """
+
+    def __init__(self, ref_types):
+        self.reference_types = ref_types
+
+    def get_required(self, name):
+        """Gets all required fields of a reference type by name"""
+        for ref in self.reference_types:
+            if ref['name'] == name:
+                return ref["required"]
+        return None
+
+    def get_optional(self,name):
+        """Gets all optional fields of a reference type by name"""
+        for ref in self.reference_types:
+            if ref['name'] == name:
+                return ref["optional"]
+        return None
+
 class Entry:
     """ Class representing a single entry (a.k.a reference) in bib file  """
 
@@ -142,7 +162,6 @@ class Bibtex:
         sorted_entries = sorted(with_value_type, key=key , reverse=desc)
 
         return sorted_entries + without_value_type
-
 
     def __str__(self):
         r = ""
