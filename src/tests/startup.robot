@@ -18,9 +18,9 @@ Program Starts With Bib File
     Log    MAIN PATH: ${main_path}
     Log    BIB PATH: ${bib_path}
 
-    Run Process    poetry    run    python    ${main_path}    ${bib_path}    stdout=TEXT    stderr=TEXT    timeout=3s
+    ${result}=  Run Process    poetry    run    python    ${main_path}    ${bib_path}    stdout=TEXT    stderr=TEXT    timeout=3s
 
  #   Log    STDOUT: ${result.stdout}
  #   Log    STDERR: ${result.stderr}
 
-    Output Should Contain  Warning: provided bibtex file not found, generating one when saved
+    Should Contain  ${result.stdout}  Warning: provided bibtex file not found, generating one when saved
