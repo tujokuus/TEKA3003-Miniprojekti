@@ -19,10 +19,8 @@ if __name__ == "__main__":
         with open(filename, "r", encoding="utf-8") as file:
             bib_string = file.read()
             bib.read(bib_string)
-            print("Warning: provided bibtex file not found, generating one when saved")
     except FileNotFoundError:
-        print("File not found")
-        sys.exit(1)
+        print("Warning: provided bibtex file not found, generating one when saved")
 
     # Print bib contents
     print(bib)
