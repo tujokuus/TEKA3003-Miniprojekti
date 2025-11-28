@@ -11,6 +11,7 @@ class Entry:
         self.reference_type = reference_type
         self.identifier = identifier
         self.values: dict[str, str] = {}
+        self.current_iterator_index = 0
 
     def add_value(self, value_type, value):
         """Assigns given value to wanted value type (a.k.a field)"""
@@ -24,6 +25,10 @@ class Entry:
         """Returns the value of wanted value type (a.k.a field)"""
         return self.values[value_type]
 
+    def get_value_types(self):
+        """Returns a list of all value types contained in this entry"""
+        return self.values.keys()
+
     def get_identifier(self):
         """Returns the identifier of this entry"""
         return self.identifier
@@ -33,6 +38,7 @@ class Entry:
         self.identifier = identifier
 
     def __str__(self):
+        """Outputs formatted bibtex"""
         ret = f"@{self.reference_type}{{{self.identifier},\n"
         for index, (key, value) in enumerate(self.values.items()):
             comma = ""
@@ -44,7 +50,7 @@ class Entry:
 
 
 class Bibtex:
-    """ Class for handling the entries in bibtex file"""
+    """Class for handling the entries in bibtex file"""
 
     def __init__(self):
         self.entries: list[Entry] = []
@@ -89,6 +95,54 @@ class Bibtex:
             for field in parsed_entry.fields:
                 entry.add_value(field.key, field.value)
             self.entries.append(entry)
+
+    def search(self, search_term: str, value_type: str | None = None):
+        """
+        Searches for entries by value type and its value.
+        The search term is not case sensitive.
+        If value type is omitted or set to None, the search term is searched from all values.
+
+        Returns a list of found entries.
+        """
+        found = []
+        processed_search_term = search_term.strip().lower()
+        for entry in self.entries:
+            if value_type is None:
+                for value_type2 in entry.get_value_types():
+                    if processed_search_term in entry.get_value(value_type2).lower():
+                        found.append(entry)
+                        break
+                continue
+            try:
+                if processed_search_term in entry.get_value(value_type).lower():
+                    found.append(entry)
+            except KeyError as _exc:
+                continue
+        return found
+
+    def sort(self, value_type: str, desc: bool = False):
+        """
+        Sorts entires based on value_type and returns them in a list.
+        If an entry has no value for given value_type, it will get sorted last, in no defined order,
+        even if sorting in descending order.
+        The sort is in ascending order by default, but this can be changed by argument `desc`.
+        """
+
+        with_value_type = []
+        without_value_type = []
+        for entry in self.entries:
+            try:
+                entry.get_value(value_type)
+                with_value_type.append(entry)
+            except KeyError as _exc:
+                without_value_type.append(entry)
+
+        def key(entry):
+            return entry.get_value(value_type).strip().lower()
+        sorted_entries = sorted(with_value_type, key=key , reverse=desc)
+
+        return sorted_entries + without_value_type
+
 
     def __str__(self):
         r = ""
