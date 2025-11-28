@@ -1,14 +1,22 @@
 import bibtex
 
+#Tätä luokkaa käytetään tunnistamaan testeissä olion kirjoittamaa/syöttämää tekstiä
+class KonsoliIO:
+    def lue(self, teksti):
+        return input(teksti)
+
+    def kirjoita(self, teksti):
+        print(teksti)
+
 #Console olio kysyy käyttäjältä syötettävän lähteen tiedot,
 # tallentaa ne dict olioon, ja lähettää ne bibtex oliolle
 #lahdeAvaimet halutaan Array/List muodossa
 class Console:
-    def __init__(self, bib_olio, lahde_avaimet):
+    def __init__(self, bib_olio, konsoli_io):
         self.bib = bib_olio
         #Tarvitsemme listan jo olemassa olevista lähteistä,
         # jotta voimme vertailla niitä uuteen lisättävään (esim. samannimiset avaimet)
-        self.lahteet = lahde_avaimet
+        self.konsoli_io = konsoli_io
 
     def ask_new_source(self):
         epavarma = True
@@ -26,28 +34,28 @@ class Console:
             #src_doi         = ""
 
             #Kysytään käyttäjältä konsolissa lähteen tiedot
-            print("Alustetaan uusi lähde:")
+            self.konsoli_io.kirjoita("Alustetaan uusi artikkeli:")
             src_key = self.__ask_key()
             src_title = self.__ask_title()
 
             #Kysymme käyttäjältä, onko hän varma, että annetut arvot ovat oikein
-            print("Olemme lisäämässä seuraavan lähteen, onko se oikein?")
-            print("key:", src_key)
-            print("title:", src_title)
-            confirmation = input('[Y/N]')
+            self.konsoli_io.kirjoita("Olemme lisäämässä seuraavan lähteen, onko se oikein?")
+            self.konsoli_io.kirjoita(f"key: {src_key}")
+            self.konsoli_io.kirjoita(f"title: {src_title}")
+            confirmation = self.konsoli_io.lue('[Y/N]')
             if confirmation.strip().upper() == "Y":
                 epavarma = False
 
         #Viedään hyvaksytty dict olio tallennettavaksi bibtex oliolle
-        print("Tallennetaan lähde")
+        self.konsoli_io.kirjoita("Tallennetaan lähde")
         entry = bibtex.Entry(src_key, "article")
         entry.add_value("title", src_title)
         self.bib.add(entry)
-        print(str(entry))
+        self.konsoli_io.kirjoita(str(entry))
 
-    #Päivitetään avaimet
-    def update_keys(self, uudet_avaimet):
-        self.lahteet = uudet_avaimet
+    #Päivitetään tietokanta
+    def update_bib(self, uusi_bib):
+        self.bib = uusi_bib
 
     #Kysytään ja tarkistetaan annettava avain lähteelle
     #REQUIRED
@@ -55,18 +63,17 @@ class Console:
         invalid = True
 
         while invalid:
-            print("Lisaa lähteen avain: ")
-            src_key = input('=> ')
+            self.konsoli_io.kirjoita("Lisaa lähteen avain: ")
+            src_key = self.konsoli_io.lue('=> ')
 
             duplikaatti = False
-            for lahde in self.lahteet:
-                if lahde.strip() == src_key:
-                    duplikaatti = True
+            if self.bib.get(src_key):
+                duplikaatti = True
 
             if duplikaatti:
-                print("Syotetty avain on jo olemassa, lisää parempi")
+                self.konsoli_io.kirjoita("Syotetty avain on jo olemassa, lisää parempi")
             elif src_key.strip() == "":
-                print("Syotetty avain on tyhjä, lisää parempi")
+                self.konsoli_io.kirjoita("Syotetty avain on tyhjä, lisää parempi")
             else:
                 invalid = False
 
@@ -78,11 +85,11 @@ class Console:
         invalid = True
 
         while invalid:
-            print("Lisaa lähteen nimi: ")
-            src_title = input('=> ')
+            self.konsoli_io.kirjoita("Lisaa lähteen nimi: ")
+            src_title = self.konsoli_io.lue('=> ')
 
             if src_title.strip() == "":
-                print("Syotetty nimi on tyhjä, lisää parempi")
+                self.konsoli_io.kirjoita("Syotetty nimi on tyhjä, lisää parempi")
             else:
                 invalid = False
 
