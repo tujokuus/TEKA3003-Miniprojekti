@@ -1,7 +1,7 @@
+import json
 import unittest
 import bibtex
 import console
-import json
 
 class StubIO:
     def __init__(self, inputs):

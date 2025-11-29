@@ -47,7 +47,6 @@ class Console:
             else:
                 self.konsoli_io.kirjoita("Antamaanne käskyä ei tunnistettu, antakaa se uudestaan")
 
-
     #Kysytään uusi lähde (tällä hetkellä automaattisesti article)
     def ask_new_source(self):
         """ Käyttäjältä kysytään uuden lisättävän lähteen tiedot """
@@ -70,7 +69,12 @@ class Console:
                 optional = self.forms.get_optional(tyyppi)
                 epavarma = False
 
+        self.__form_source(tyyppi, required, optional)
+
+
+    def __form_source(self, tyyppi, required, optional):
         epavarma = True
+
         while epavarma:
             #Alustetaan lähteen tiedot
             tiedot = [] # [{"key_value": "key_information"}]
