@@ -14,7 +14,7 @@ class Console:
 
     def __init__(self, bib_olio, konsoli_io, formaatit):
         self.bib = bib_olio
-        #Olio sisältää pakolliset atrbituutit eri lähde tyypeille 
+        #Olio sisältää pakolliset atrbituutit eri lähde tyypeille
         self.forms = formaatit
         #Tarvitsemme listan jo olemassa olevista lähteistä,
         # jotta voimme vertailla niitä uuteen lisättävään (esim. samannimiset avaimet)
