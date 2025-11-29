@@ -8,9 +8,9 @@ class KonsoliIO:
     def kirjoita(self, teksti):
         print(teksti)
 
+
 #Console olio kysyy käyttäjältä syötettävän lähteen tiedot,
 # tallentaa ne dict olioon, ja lähettää ne bibtex oliolle
-#lahdeAvaimet halutaan Array/List muodossa
 class Console:
     def __init__(self, bib_olio, konsoli_io):
         self.bib = bib_olio
@@ -18,6 +18,34 @@ class Console:
         # jotta voimme vertailla niitä uuteen lisättävään (esim. samannimiset avaimet)
         self.konsoli_io = konsoli_io
 
+
+    #Kysyy käyttäjältä mitä hän haluaa tehdä, ja ohjataan sen mukaiseen aliohjelmaan
+    def activate(self):
+        self.konsoli_io.kirjoita("Tervetuloa 'Bib tiedosto lukijaan', mitä tehtäisiin?")
+
+        active = True
+        while active:
+            self.konsoli_io.kirjoita("Vaihtoehtona ovat: ")
+            self.konsoli_io.kirjoita("'A' lisää uusi lähde, ")
+            self.konsoli_io.kirjoita("'B' muokataan/poistetaan olemassa olevaa lähdetta, ")
+            self.konsoli_io.kirjoita("'C' järjestetään lähteet atribuutin mukaan, ")
+            self.konsoli_io.kirjoita("'Q' poistutaan sovelluksesta. ")
+            confirmation = self.konsoli_io.lue('=>')
+
+            if confirmation.strip().upper() == "A":
+                self.ask_new_source()
+            elif confirmation.strip().upper() == "B":
+                self.edit_source()
+            elif confirmation.strip().upper() == "C":
+                self.sort_sources()
+            elif confirmation.strip().upper() == "Q":
+                self.konsoli_io.kirjoita("Kiitoksia käytöstä")
+                active = False
+            else:
+                self.konsoli_io.kirjoita("Antamaanne käskyä ei tunnistettu, antakaa se uudestaan")
+
+
+    #Kystyään uusi lähde (tällä hetkellä automaattisesti article)
     def ask_new_source(self):
         epavarma = True
 
@@ -57,6 +85,7 @@ class Console:
     def update_bib(self, uusi_bib):
         self.bib = uusi_bib
 
+
     #Kysytään ja tarkistetaan annettava avain lähteelle
     #REQUIRED
     def __ask_key(self):
@@ -79,6 +108,7 @@ class Console:
 
         return src_key
 
+
     #Kysytään ja tarkistetaan annettava lähteen nimi
     #REQUIRED
     def __ask_title(self):
@@ -94,3 +124,19 @@ class Console:
                 invalid = False
 
         return src_title
+
+
+    #Otetaan uusi lähde käsittelyyn ja editoidaan sen arvoja
+    #Jos uudeksi arvoksi sijoitetaan tyhjä, se poistetaan
+    #Jos avain arvoksi sijoitetaan tyhjä, koko lähde poistetaan
+    #Kaikille uusille arvoille suoritetaan oikeustarkastus, lähdettä ei tallenneta jos
+    #kaikki REQUIRED kentät ja annetut arvot ole hyväksyttäviä
+    #Tehtävänä
+    def edit_source(self):
+        print("Coming soon: editing and deleting sources.")
+
+
+    #Kysytään käyttäjältä lähteen atribuutti ja järjestetään ne sen mukaan
+    #Jos lähteellä ei ole annettua atribuuttia, pistetään ne listan perälle muuttamatta?
+    def sort_sources(self):
+        print("Coming soon: sorting sources by parameters.")
