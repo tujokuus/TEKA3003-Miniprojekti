@@ -37,7 +37,7 @@ if __name__ == "__main__":
     print(bib)
 
     #Aktivoidaan konsoli (kysytään käyttäjältä uusi tiedosto)
-    konsoli = console.Console(bib , console.KonsoliIO())
+    konsoli = console.Console(bib, console.KonsoliIO(), json)
     konsoli.activate()
 
     # Save bibtex (a.k.a database) to file

@@ -86,3 +86,54 @@ class TestConsole(unittest.TestCase):
         self.assertTrue(
             any("Tallennetaan lähde" in out for out in stubio.outputs),
         )
+
+    def test_sort_empty_attribute(self):
+        stubio = StubIO([""])  # käyttäjä syöttää tyhjän attribuutin
+        konsoli = console.Console(self.bib, stubio)
+        konsoli.sort_sources()
+
+        self.assertTrue(
+            any("Atribuutti ei voi olla tyhjä." in out for out in stubio.outputs)
+        )
+
+    def test_sort_by_title(self):
+        # syötetään attribuutti "title" ja järjestys "N" (asc)
+        stubio = StubIO(["title", "N"])
+        konsoli = console.Console(self.bib, stubio)
+        konsoli.sort_sources()
+
+        # tarkistaa että järjestäminen käynnistyi
+        self.assertTrue(
+            any("Lähteet järjestetty attribuutin 'title' mukaan:" in out for out in stubio.outputs)
+        )
+
+        # tarkistaa että tulostettiin olemassa oleva entry
+        self.assertTrue(
+            any("Testi artikkeli" in out for out in stubio.outputs)
+        )
+
+    def test_sort_from_main_menu(self):
+        # C = sort, annetaan attribuutti title, järjestys N (asc), lopuksi Q
+        stubio = StubIO(["C", "title", "N", "Q"])
+        konsoli = console.Console(self.bib, stubio)
+        konsoli.activate()
+
+        self.assertTrue(
+            any("Lähteet järjestetty attribuutin 'title' mukaan:" in out 
+                for out in stubio.outputs)
+        )
+
+    def test_sort_descending(self):
+        # luodaan toinen entry, jonka title alkaa "Z"
+        second = bibtex.Entry("bar", "article")
+        second.add_value("title", "Z-title")
+        self.bib.add(second)
+
+        stubio = StubIO(["title", "Y"])  # laskeva järjestys
+
+        konsoli = console.Console(self.bib, stubio)
+        konsoli.sort_sources()
+
+        # tarkistetaan että Z-title tulostui ennen Testi artikkeli
+        outputs = "\n".join(stubio.outputs)
+        self.assertLess(outputs.index("Z-title"), outputs.index("Testi artikkeli"))

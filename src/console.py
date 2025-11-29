@@ -9,11 +9,13 @@ class KonsoliIO:
         print(teksti)
 
 
-#Console olio kysyy käyttäjältä syötettävän lähteen tiedot,
-# tallentaa ne dict olioon, ja lähettää ne bibtex oliolle
 class Console:
-    def __init__(self, bib_olio, konsoli_io):
+    """ Console olio kysyy ja suorittaa käyttäjältä haluttavia toimintoja """
+
+    def __init__(self, bib_olio, konsoli_io, formaatit):
         self.bib = bib_olio
+        #Olio sisältää pakolliset atrbituutit eri lähde tyypeille 
+        self.forms = formaatit
         #Tarvitsemme listan jo olemassa olevista lähteistä,
         # jotta voimme vertailla niitä uuteen lisättävään (esim. samannimiset avaimet)
         self.konsoli_io = konsoli_io
@@ -21,6 +23,7 @@ class Console:
 
     #Kysyy käyttäjältä mitä hän haluaa tehdä, ja ohjataan sen mukaiseen aliohjelmaan
     def activate(self):
+        """ Aktivoi konsolin, käyttäjä ohjataan 'main menuun' """
         self.konsoli_io.kirjoita("Tervetuloa 'Bib tiedosto lukijaan', mitä tehtäisiin?")
 
         active = True
@@ -45,44 +48,75 @@ class Console:
                 self.konsoli_io.kirjoita("Antamaanne käskyä ei tunnistettu, antakaa se uudestaan")
 
 
-    #Kystyään uusi lähde (tällä hetkellä automaattisesti article)
+    #Kysytään uusi lähde (tällä hetkellä automaattisesti article)
     def ask_new_source(self):
+        """ Käyttäjältä kysytään uuden lisättävän lähteen tiedot """
         epavarma = True
+        tyyppi = ""
+        required = []
+        optional = []
 
         while epavarma:
+            self.konsoli_io.kirjoita("Kirjoita lähteen luokka:")
+            tyyppi = self.konsoli_io.lue('=>').strip().lower()
+            self.konsoli_io.kirjoita(f"Valittuna luokkana: {tyyppi}")
+            required = self.forms.get_required(tyyppi)
+            if required is None:
+                self.konsoli_io.kirjoita("Luokkaa ei tunnistettu, lisätäänkö se kuitenkin?")
+                confirmation = self.konsoli_io.lue('[Y/N]')
+                if confirmation.strip().upper() == "Y":
+                    epavarma = False
+            else:
+                optional = self.forms.get_optional(tyyppi)
+                epavarma = False
+
+        epavarma = True
+        while epavarma:
             #Alustetaan lähteen tiedot
-            src_key         = ""
-            src_title       = ""
-            #src_author      = ""
-            #src_date        = ""
-            #src_bookTitle   = ""
-            #src_volume      = 0
-            #src_pages       = ""
-            #src_publisher   = ""
-            #src_doi         = ""
+            tiedot = [] # [{"key_value": "key_information"}]
 
             #Kysytään käyttäjältä konsolissa lähteen tiedot
-            self.konsoli_io.kirjoita("Alustetaan uusi artikkeli:")
+            self.konsoli_io.kirjoita(f"Alustetaan uusi {tyyppi}:")
             src_key = self.__ask_key()
-            src_title = self.__ask_title()
+            for field in required:
+                src_value = self.__ask_required(field)
+                tiedot.append(src_value)
+            for field in optional:
+                src_value = self.__ask_optional(field)
+                tiedot.append(src_value)
+            lisaa = True
+            while lisaa:
+                self.konsoli_io.kirjoita("Lisää vapaa arvo? Jätä nimi tyhjäksi jos ei.")
+                self.konsoli_io.kirjoita("Atribuutin nimi:")
+                src_type = self.konsoli_io.lue('=>')
+                if src_type.strip() == "":
+                    lisaa = False
+                    break
+                self.konsoli_io.kirjoita("Atribuutin sisältö:")
+                src_value = self.konsoli_io.lue('=>')
+                tiedot.append({src_type: src_value})
 
             #Kysymme käyttäjältä, onko hän varma, että annetut arvot ovat oikein
             self.konsoli_io.kirjoita("Olemme lisäämässä seuraavan lähteen, onko se oikein?")
-            self.konsoli_io.kirjoita(f"key: {src_key}")
-            self.konsoli_io.kirjoita(f"title: {src_title}")
+            for tieto in tiedot:
+                if tieto is not None:
+                    self.konsoli_io.kirjoita(f"{tieto['type']}: {tieto['value']}")
             confirmation = self.konsoli_io.lue('[Y/N]')
             if confirmation.strip().upper() == "Y":
                 epavarma = False
 
         #Viedään hyvaksytty dict olio tallennettavaksi bibtex oliolle
         self.konsoli_io.kirjoita("Tallennetaan lähde")
-        entry = bibtex.Entry(src_key, "article")
-        entry.add_value("title", src_title)
+        entry = bibtex.Entry(src_key, tyyppi)
+        for tieto in tiedot:
+            if tieto is not None:
+                entry.add_value(tieto['type'], tieto['value'])
         self.bib.add(entry)
         self.konsoli_io.kirjoita(str(entry))
 
-    #Päivitetään tietokanta
+
     def update_bib(self, uusi_bib):
+        """ Konsolille päivitetään uusi bibtex/tietokanta """
         self.bib = uusi_bib
 
 
@@ -109,21 +143,38 @@ class Console:
         return src_key
 
 
-    #Kysytään ja tarkistetaan annettava lähteen nimi
+    #Kysytään tarvittava luokan atribuutti, annetaan atribuutin nimi
     #REQUIRED
-    def __ask_title(self):
+    def __ask_required(self, tyyppi):
         invalid = True
+        palautus = {}
 
         while invalid:
-            self.konsoli_io.kirjoita("Lisaa lähteen nimi: ")
-            src_title = self.konsoli_io.lue('=> ')
+            self.konsoli_io.kirjoita(f"Lisaa lähteen pakollinen {tyyppi}: ")
+            src_value = self.konsoli_io.lue('=> ')
 
-            if src_title.strip() == "":
-                self.konsoli_io.kirjoita("Syotetty nimi on tyhjä, lisää parempi")
+            if src_value.strip() == "":
+                self.konsoli_io.kirjoita(f"Syotetty {tyyppi} on tyhjä, lisää parempi")
             else:
                 invalid = False
 
-        return src_title
+        palautus["type"] = tyyppi
+        palautus["value"] = src_value
+        return palautus
+
+
+    #Kysytään ja tarkistetaan annettava lähteen nimi
+    def __ask_optional(self, tyyppi):
+        palautus = {}
+
+        self.konsoli_io.kirjoita(f"Lisaa lähteen {tyyppi}: ")
+        src_value = self.konsoli_io.lue('=> ')
+        if src_value.strip() == "":
+            return None
+
+        palautus["type"] = tyyppi
+        palautus["value"] = src_value
+        return palautus
 
 
     #Otetaan uusi lähde käsittelyyn ja editoidaan sen arvoja
@@ -133,10 +184,36 @@ class Console:
     #kaikki REQUIRED kentät ja annetut arvot ole hyväksyttäviä
     #Tehtävänä
     def edit_source(self):
+        """ Käyttäjältä kysytään muokattava/poistettava lähde ja sen tiedot """
         print("Coming soon: editing and deleting sources.")
 
 
     #Kysytään käyttäjältä lähteen atribuutti ja järjestetään ne sen mukaan
     #Jos lähteellä ei ole annettua atribuuttia, pistetään ne listan perälle muuttamatta?
     def sort_sources(self):
-        print("Coming soon: sorting sources by parameters.")
+        """ Käyttäjä suorittaa lähteiden järjestämisen """
+        self.konsoli_io.kirjoita("Anna attribuutti, jonka mukaan järjestetään,")
+        self.konsoli_io.kirjoita("esim. title, author, year:")
+        attr = self.konsoli_io.lue("=> ").strip()
+
+        # jos käyttäjä syöttää tyhjän, ei järjestetä
+        if attr == "":
+            self.konsoli_io.kirjoita("Atribuutti ei voi olla tyhjä.")
+            return
+
+        self.konsoli_io.kirjoita("Järjestetäänkö laskevasti?")
+        order = self.konsoli_io.lue("[Y/N]").strip().upper()
+        desc = order == "Y"
+
+        # Käytetään bibtex-luokan sort-metodia
+        sorted_entries = self.bib.sort(attr, desc)
+
+        self.konsoli_io.kirjoita(f"Lähteet järjestetty attribuutin '{attr}' mukaan:")
+        self.konsoli_io.kirjoita("")
+
+        if not sorted_entries:
+            self.konsoli_io.kirjoita("Ei yhtään lähdettä.")
+            return
+
+        for entry in sorted_entries:
+            self.konsoli_io.kirjoita(str(entry))
