@@ -1,12 +1,23 @@
 '''
-DOC
+Main for our reference helper
 '''
 
 import sys
+import json
 import bibtex
 import console
 
+
 if __name__ == "__main__":
+
+    # Read reference types from refs.json file
+    try:
+        with open('refs.json', 'r',encoding='utf-8') as file:
+            data = json.load(file)
+    except FileNotFoundError:
+        print("Error: file 'refs.json' not found.")
+    json = bibtex.Fields(data['Reference_types'])
+
     # Parse arguments
     if len(sys.argv) <= 1:
         print(f"Usage: {sys.argv[0]} <file.bib>")
