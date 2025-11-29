@@ -1,0 +1,256 @@
+{
+    "Reference_types": [
+        {
+            "name": "article",
+            "required": [
+                "author",
+                "title",
+                "journal",
+                "year"
+            ],
+            "optional": [
+                "volume",
+                "number",
+                "pages",
+                "month",
+                "note",
+                "annote"
+            ]
+        },
+        {
+            "name": "book",
+            "required": [
+                "author",
+                "title",
+                "publisher",
+                "year"
+            ],
+            "optional": [
+                "volume",
+                "number",
+                "series",
+                "address",
+                "edition",
+                "month",
+                "note",
+                "annote"
+            ]
+        },
+        {
+            "name": "booklet",
+            "required": [
+                "title"
+            ],
+            "optional": [
+                "author",
+                "howpublished",
+                "address",
+                "month",
+                "year",
+                "note",
+                "annote"
+            ]
+        },
+        {
+            "name": "conference",
+            "required": [
+                "author",
+                "title"
+            ],
+            "optional": [
+                "booktitle ",
+                "year",
+                "editor",
+                "volume",
+                "number",
+                "series",
+                "pages",
+                "month",
+                "address",
+                "organization",
+                "publisher",
+                "note",
+                "annote"
+            ]
+        },
+        {
+            "name": "inbook",
+            "required": [
+                "author",
+                "title",
+                "chapter",
+                "publisher",
+                "year"
+            ],
+            "optional": [
+                "volume",
+                "number",
+                "series",
+                "type",
+                "address",
+                "edition",
+                "month",
+                "pages",
+                "note",
+                "annote"
+            ]
+        },
+        {
+            "name": "incollection",
+            "required": [
+                "author",
+                "title",
+                "booktitle"
+            ],
+            "optional": [
+                "publisher",
+                "year",
+                "editor",
+                "volume",
+                "number",
+                "series",
+                "type",
+                "chapter",
+                "pages",
+                "edition",
+                "month",
+                "address",
+                "note",
+                "annote"
+            ]
+        },
+        {
+            "name": "inproceedngs",
+            "required": [
+                "author",
+                "title"
+            ],
+            "optional": [
+                "booktitle",
+                "year",
+                "editor",
+                "volume",
+                "number ",
+                "series",
+                "pages",
+                "month",
+                "address",
+                "organization",
+                "publisher",
+                "note",
+                "annote"
+            ]
+        },
+        {
+            "name": "manual",
+            "required": [
+                "title"
+            ],
+            "optional": [
+                "author",
+                "organization",
+                "address",
+                "edition",
+                "month",
+                "year",
+                "note",
+                "annote"
+            ]
+        },
+        {
+            "name": "mastersthesis",
+            "required": [
+                "author",
+                "title",
+                "school",
+                "year"
+            ],
+            "optional": [
+                "type",
+                "address",
+                "month",
+                "note",
+                "annote"
+            ]
+        },
+        {
+            "name": "phdthesis",
+            "required": [
+                "author",
+                "title",
+                "school",
+                "year"
+            ],
+            "optional": [
+                "type",
+                "address",
+                "month",
+                "note",
+                "annote"
+            ]
+        },
+        {
+            "name": "proceedngs",
+            "required": [
+                "title",
+                "year"
+            ],
+            "optional": [
+                "booktitle",
+                "editor",
+                "volume",
+                "number",
+                "series",
+                "address",
+                "month",
+                "organization",
+                "publisher",
+                "note",
+                "annote"
+            ]
+        },
+        {
+            "name": "teachreport",
+            "required": [
+                "author",
+                "title",
+                "institution",
+                "year"
+            ],
+            "optional": [
+                "type",
+                "number",
+                "address",
+                "month",
+                "note",
+                "annote"
+            ]
+        },
+        {
+            "name": "unpublished",
+            "required": [
+                "author",
+                "title"
+            ],
+            "optional": [
+                "note",
+                "month",
+                "year",
+                "annote"
+            ]
+        },
+        {
+            "name": "misc",
+            "required": [
+                "author",
+                "title",
+                "howpublished",
+                "month",
+                "year",
+                "note",
+                "annote"
+            ],
+            "optional": []
+        }
+    ]
+}
