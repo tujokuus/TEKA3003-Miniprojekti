@@ -13,6 +13,9 @@ class StubIO:
     def kirjoita(self, teksti):
         self.outputs.append(teksti)
 
+    def lisaa_syote(self, teksti):
+        self.inputs.append(teksti)
+
 
 class TestConsole(unittest.TestCase):
     def setUp(self):
