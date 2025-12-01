@@ -28,6 +28,13 @@ if __name__ == "__main__":
     app = App(console)
     app.run()
 
+    # Print bib contents
+    print(bib)
+
+    #Aktivoidaan konsoli (kysytään käyttäjältä uusi tiedosto)
+    konsoli = console.Console(bib, console.KonsoliIO(), json)
+    konsoli.activate()
+
     # Save bibtex (a.k.a database) to file
     try:
         with open(filename, "w", encoding="utf-8") as file:
