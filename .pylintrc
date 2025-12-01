@@ -1,6 +1,8 @@
 [MASTER]
 
-ignore=tests
+ignore=
+        tests,
+        AppLibrary.py
 
 [MESSAGES CONTROL]
 

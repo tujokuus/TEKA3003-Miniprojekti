@@ -1,6 +1,5 @@
 *** Settings ***
-Library  ../tests/test_console.py
-Library  ../tests/test_bibtex.py
+Library  ../AppLibrary.py
 
 *** Keywords ***
 Input Yes Command
@@ -12,8 +11,9 @@ Input No Command
 Start Application
     Run Application
 
-Input Surce Credentials
+Input Source Credentials
    [Arguments]  ${source_key}  ${source_name}
     Input  ${source_key}
     Input  ${source_name}
+    Input Yes Command
     Run Application
