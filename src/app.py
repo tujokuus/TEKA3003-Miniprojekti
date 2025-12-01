@@ -4,4 +4,4 @@ class App: # pylint: disable=too-few-public-methods
 
     def run(self):
         # Aktivoidaan konsoli (kysytään käyttäjältä uusi tiedosto)
-        self._console.ask_new_source()
+        self._console.activate()

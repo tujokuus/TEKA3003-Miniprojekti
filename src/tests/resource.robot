@@ -8,6 +8,18 @@ Input Yes Command
 Input No Command
     Input  n
 
+Input Add New Source Command
+    Input  a
+
+Input Edit Source Command
+    Input  b
+
+Input Sort Sources Command
+    Input  c
+
+Input Quit Command
+    Input  q
+
 Start Application
     Run Application
 
@@ -16,4 +28,3 @@ Input Source Credentials
     Input  ${source_key}
     Input  ${source_name}
     Input Yes Command
-    Run Application

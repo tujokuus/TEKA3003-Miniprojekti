@@ -1,8 +1,11 @@
-import sys
+'''
+Main for our reference helper
+'''
 
+import sys
+from app import App
 from console import Console, KonsoliIO
 from bibtex import Bibtex
-from app import App
 
 if __name__ == "__main__":
     # Parse arguments
