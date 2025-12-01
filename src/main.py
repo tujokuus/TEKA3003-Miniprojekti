@@ -5,7 +5,7 @@ Main for our reference helper
 import sys
 from app import App
 from console import Console, KonsoliIO
-from bibtex import Bibtex
+from bibtex import Bibtex, Fields
 
 if __name__ == "__main__":
     # Parse arguments
@@ -24,16 +24,10 @@ if __name__ == "__main__":
         print("Warning: provided bibtex file not found, generating one when saved")
 
     io = KonsoliIO()
-    console = Console(bibtex, io)
+    formaatit = Fields()
+    console = Console(bibtex, io, formaatit)
     app = App(console)
     app.run()
-
-    # Print bib contents
-    print(bib)
-
-    #Aktivoidaan konsoli (kysytään käyttäjältä uusi tiedosto)
-    konsoli = console.Console(bib, console.KonsoliIO(), json)
-    konsoli.activate()
 
     # Save bibtex (a.k.a database) to file
     try:

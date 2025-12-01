@@ -32,14 +32,7 @@ class TestConsole(unittest.TestCase):
         entry = bibtex.Entry("foo", "article")
         entry.add_value("title", "Testi artikkeli")
         self.bib.add(entry)
-
-         # Read reference types from refs.json file
-        try:
-            with open('refs.json', 'r',encoding='utf-8') as file:
-                data = json.load(file)
-        except FileNotFoundError:
-            print("Error: file 'refs.json' not found.")
-        self.json = bibtex.Fields(data['Reference_types'])
+        self.json = bibtex.Fields()
 
     def test_add_new_source(self):
         stubio = StubIO(["book", "baa", "Luukas", "Wise works by Luke", "JYU", "2025",

@@ -8,6 +8,9 @@ Input Yes Command
 Input No Command
     Input  n
 
+Input Nothing
+    Input  value=
+
 Input Add New Source Command
     Input  a
 
@@ -23,8 +26,19 @@ Input Quit Command
 Start Application
     Run Application
 
-Input Source Credentials
-   [Arguments]  ${source_key}  ${source_name}
+Input Article
+   [Arguments]  ${source_key}  ${source_author}  ${source_title}  ${source_journal}  ${source_year}
+    Input  article
     Input  ${source_key}
-    Input  ${source_name}
+    Input  ${source_author}
+    Input  ${source_title}
+    Input  ${source_journal}
+    Input  ${source_year}
+    Input Nothing
+    Input Nothing
+    Input Nothing
+    Input Nothing
+    Input Nothing
+    Input Nothing
+    Input Nothing
     Input Yes Command
