@@ -358,7 +358,7 @@ version = "7.3.2"
 description = "Generic automation framework for acceptance testing and robotic process automation (RPA)"
 optional = false
 python-versions = ">=3.8"
-groups = ["main"]
+groups = ["dev"]
 files = [
     {file = "robotframework-7.3.2-py3-none-any.whl", hash = "sha256:14ef2afa905285cc073df6ce06d0cd3af4a113df6f815532718079e00c98cca4"},
     {file = "robotframework-7.3.2.tar.gz", hash = "sha256:3bb3e299831ecb1664f3d5082f6ff9f08ba82d61a745bef2227328ef3049e93a"},
@@ -445,4 +445,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10"
-content-hash = "525979651adfe99a5de6c71765d51b1bf04596a9ea1915c4b3e82f5459f129f8"
+content-hash = "b782baa3c114657fea4737647d53d4e93e9c439b5497e72dc3385e0797613fce"
