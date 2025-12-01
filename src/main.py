@@ -1,38 +1,10 @@
-'''
-DOC
-'''
-
-import sys
-import bibtex
-import console
+from console import Console, KonsoliIO
+from bibtex import Bibtex
+from app import App
 
 if __name__ == "__main__":
-    # Parse arguments
-    if len(sys.argv) <= 1:
-        print(f"Usage: {sys.argv[0]} <file.bib>")
-        sys.exit(1)
-    filename = sys.argv[1]
-
-    # Attempt to load bibtex from provided file
-    bib = bibtex.Bibtex()
-    try:
-        with open(filename, "r", encoding="utf-8") as file:
-            bib_string = file.read()
-            bib.read(bib_string)
-    except FileNotFoundError:
-        print("Warning: provided bibtex file not found, generating one when saved")
-
-    # Print bib contents
-    print(bib)
-
-    #Aktivoidaan konsoli (kysytään käyttäjältä uusi tiedosto)
-    konsoli = console.Console(bib , console.KonsoliIO())
-    konsoli.ask_new_source()
-
-    # Save bibtex (a.k.a database) to file
-    try:
-        with open(filename, "w", encoding="utf-8") as file:
-            file.write(str(bib))
-    except IOError:
-        print("Could not save file!")
-        sys.exit(1)
+    io = KonsoliIO()
+    bibtex = Bibtex()
+    console = Console(bibtex, io)
+    app = App(console)
+    app.run()
