@@ -1,4 +1,3 @@
-import json
 import unittest
 import bibtex
 import console
@@ -47,7 +46,7 @@ class TestConsole(unittest.TestCase):
         #Testiohjelma suuttuu jos inputit "jäävät kesken", täten
         #lisäämme oikean arvon ja suoritamme lisäystapahtuman loppuun
         #virheellisen syötön annon jälkeen
-        stubio = StubIO(["book", "foo", "baa", "Luukas", "Wise works by Luke", "JYU", "2025",
+        stubio = StubIO(["book", "foo", "baa", "Luukas", "JYU", "Wise works by Luke", "2025",
          "", "", "", "", "", "", "", "", "", "Y"])
         konsoli = console.Console(self.bib, stubio, self.json)
         konsoli.ask_new_source()
@@ -57,7 +56,7 @@ class TestConsole(unittest.TestCase):
         )
 
     def test_add_empty_key(self):
-        stubio = StubIO(["book", "", "baa", "Luukas", "Wise works by Luke", "JYU", "2025",
+        stubio = StubIO(["book", "", "baa", "Luukas", "JYU", "Wise works by Luke", "2025",
          "", "", "", "", "", "", "", "", "", "Y"])
         konsoli = console.Console(self.bib, stubio, self.json)
         konsoli.ask_new_source()
@@ -67,7 +66,7 @@ class TestConsole(unittest.TestCase):
         )
 
     def test_add_empty_title(self):
-        stubio = StubIO(["book", "baa", "Luukas", "Wise works by Luke", ""," JYU" , "2025",
+        stubio = StubIO(["book", "baa", "Luukas", "JYU", "","Wise works by Luke" , "2025",
          "", "", "", "", "", "", "", "", "", "Y"])
         konsoli = console.Console(self.bib, stubio, self.json)
         konsoli.ask_new_source()
@@ -96,7 +95,7 @@ class TestConsole(unittest.TestCase):
         )
 
     def test_add_new_source_from_main(self):
-        stubio = StubIO(["A", "book", "", "baa", "Luukas", "Wise works by Luke", "JYU", "2025",
+        stubio = StubIO(["A", "book", "", "baa", "Luukas", "JYU", "Wise works by Luke", "2025",
          "", "", "", "", "", "", "", "", "", "Y", "Q"])
         konsoli = console.Console(self.bib, stubio, self.json)
         konsoli.activate()

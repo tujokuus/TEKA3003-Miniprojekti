@@ -77,12 +77,17 @@ class Entry:
         """Removes value assigned to wanted value type" (a.k.a field)"""
         self.values.pop(value_type)
 
+    def get_ref_type(self):
+        "Returns the reference type of the entry"
+        return self.reference_type
+
     def get_value(self, value_type):
         """Returns the value of wanted value type (a.k.a field)"""
         return self.values[value_type]
 
     def get_value_types(self):
         """Returns a list of all value types contained in this entry"""
+        print(self.values.keys())
         return self.values.keys()
 
     def get_identifier(self):
@@ -133,6 +138,10 @@ class Bibtex:
         for entry in self.entries:
             if entry.get_identifier() == identifier:
                 self.entries.remove(entry)
+
+    def get_all_entries(self):
+        """Returns all entries in bibtex"""
+        return self.entries
 
     def get(self, identifier):
         """Returns an entry (a.k.a reference) with matching identifier"""

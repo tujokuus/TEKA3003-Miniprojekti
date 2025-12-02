@@ -20,6 +20,20 @@ class Console:
         # jotta voimme vertailla niitä uuteen lisättävään (esim. samannimiset avaimet)
         self.konsoli_io = konsoli_io
 
+    #Käydään läpi käsiteltävän lähteen kaikki pakolliset tietokentät,
+    # katsotaan jos niissä on jo jotakin ja ilmoitetaan se käyttäjälle
+    #Käyttäjä EI VOI poistaa/jättää tyhjäksi atribuuttia, mutta voi skipata
+    #Käyttäjä voi  poistua välittömästi muokkauksesta painamalla 'q' näppäntä
+    def __edit_required(self, lahde, required, poistutaan):
+        pass
+            
+
+    #Käydään läpi käsiteltävän lähteen kaikki tietokentät, jotka eivät ole required listassa
+    # katsotaan jos niissä on jo jotakin ja ilmoitetaan se käyttäjälle
+    #Käyttäjä VOI poistaa/jättää tyhjäksi atribuutin valitsemalla 'd', ja voi skipata muokkauksen '' arvolla
+    #Käyttäjä voi  poistua välittömästi muokkauksesta painamalla 'q' näppäntä
+    def __edit_extras(self, lahde, required, all_fields, poistutaan):
+        pass
 
     #Kysyy käyttäjältä mitä hän haluaa tehdä, ja ohjataan sen mukaiseen aliohjelmaan
     def activate(self):
@@ -188,7 +202,88 @@ class Console:
     #Tehtävänä
     def edit_source(self):
         """ Käyttäjältä kysytään muokattava/poistettava lähde ja sen tiedot """
-        print("Coming soon: editing and deleting sources.")
+        loopataan = True
+
+        while loopataan:
+            self.konsoli_io.kirjoita("Valitse muokattava/poistettavan lähteen avain.")
+            #Listataan valittavan lähteen avaimet ja mahdolliset nimet?
+            self.konsoli_io.kirjoita("Tämänhetkiset lähteet:")
+            lahteet = self.bib.get_all_entries()    #Saadaan ulos lista entry olioista
+            for lahde in lahteet:
+                avain = lahde.get_identifier()
+                title = lahde.get_value("title")
+                if title is not None:
+                    self.konsoli_io.kirjoita(f"- Lahde: {avain}; {title}")
+                else:
+                    self.konsoli_io.kirjoita(f"- Lahde: {avain}")
+            syote = self.konsoli_io.lue('=> ').strip()
+
+            for lahde in lahteet:
+                if lahde.get_identifier() == syote:
+                    self.konsoli_io.kirjoita("Lähde löydetty, aletaan muokkaus/poisto")
+                    self.konsoli_io.kirjoita("Atribuutit käydään läpi yksi kerrallaan,")
+                    self.konsoli_io.kirjoita("Paina enter skipataksesi atribuutin")
+                    self.konsoli_io.kirjoita("Paina'd' symboli poistaaksesi atribuutin")
+                    self.konsoli_io.kirjoita("Paina'q' symboli poitsuaksesi muokkauksesta")
+                    self.konsoli_io.kirjoita("HUOMIO: Jos poistat key arvon, poistat koko lähteen!")
+
+                    self.__edit_specific_source(lahde)
+
+                    return
+
+            self.konsoli_io.kirjoita("Annetulla avaimella ei löydetty lähdettä, yritä uudestaan")
+
+    def __edit_specific_source(self, lahde):
+        """ Editoidaan tiettyä lähdettä """
+        old_key = lahde.get_identifier()
+        new_key = old_key
+
+        #Kysytään uusi avainarvo, vai poistetaanko koko lähde
+        invalid = True
+        while invalid:
+            self.konsoli_io.kirjoita(f"Muokataan avainta: {old_key}")
+            src_value = self.konsoli_io.lue('=> ').strip().upper()
+
+            if src_value == "":
+                break
+            if src_value== "D":
+                self.konsoli_io.kirjoita("Poistamme lähteen")
+                self.bib.remove(old_key)
+            elif src_value == "Q":
+                return
+            elif self.bib.get(src_value):
+                self.konsoli_io.kirjoita("Samanarvoinen avain on jo olemassa, lisää parempi.")
+            else:
+                new_key = src_value
+                lahde.set_identifier(new_key)
+                invalid = False
+
+        tyyppi = lahde.get_ref_type()
+        required = self.forms.get_required(tyyppi)
+        all_fields = lahde.get_value_types()
+
+        poistutaan = False
+        self.__edit_required(lahde, required, poistutaan)
+        if poistutaan:
+            return
+        self.__edit_extras(lahde, required, all_fields, poistutaan)
+        if poistutaan:
+            return
+        lisaa = True
+        while lisaa:
+            self.konsoli_io.kirjoita("Lisää vapaa arvo? Jätä nimi tyhjäksi jos ei.")
+            self.konsoli_io.kirjoita("Atribuutin nimi:")
+            src_type = self.konsoli_io.lue('=>')
+            if src_type.strip() == "":
+                lisaa = False
+                break
+            self.konsoli_io.kirjoita("Atribuutin sisältö:")
+            src_value = self.konsoli_io.lue('=>')
+            lahde.add_value(src_type, src_value)
+
+        self.konsoli_io.kirjoita("Tallennetaan uusi muokattu lähde.")
+        self.bib.remove(old_key)
+        self.bib.add(lahde)
 
 
     #Kysytään käyttäjältä lähteen atribuutti ja järjestetään ne sen mukaan
