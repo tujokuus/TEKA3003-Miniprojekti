@@ -33,6 +33,14 @@ class TestConsole(unittest.TestCase):
         self.bib.add(entry)
         self.json = bibtex.Fields()
 
+        class FakeForms:
+            def get_required(self, t):
+                return ["title"]
+            def get_optional(self, t):
+                return ["author"]
+
+        self.forms = FakeForms()
+
     def test_add_new_source(self):
         stubio = StubIO(["book", "baa", "Luukas", "Wise works by Luke", "JYU", "2025",
          "", "", "", "", "", "", "", "", "", "Y"])
@@ -154,3 +162,33 @@ class TestConsole(unittest.TestCase):
         # tarkistetaan että Z-title tulostui ennen Testi artikkeli
         outputs = "\n".join(stubio.outputs)
         self.assertLess(outputs.index("Z-title"), outputs.index("Testi artikkeli"))
+
+    def test_sort_invalid_attribute(self):
+        # luodaan testibib
+        e1 = bibtex.Entry("testi1", "article")
+        e1.add_value("title", "Testi artikkeli")
+        self.bib.add(e1)
+        e2 = bibtex.Entry("testi2", "article")
+        e2.add_value("author", "Author2")
+        self.bib.add(e2)
+
+        # StubIO: syötetään attribuutti, jota ei ole olemassa
+        stubio = StubIO(["not_a_field"])
+
+        konsoli = console.Console(self.bib, stubio, self.json)
+        konsoli.sort_sources()
+
+        # tarkistetaan että tulostuu virheilmoitus attribuutista, jota ei löydy
+        outputs = "\n".join(stubio.outputs)
+        self.assertIn("Atribuuttia 'not_a_field' ei löydy yhdeltäkään lähteeltä.", outputs)
+
+    def test_remove_source(self):
+        """ Testataan lähteen poisto """
+        # syötteet: valitaan 'testi1', painetaan 'D' poistaakseen
+        stubio = StubIO(["foo", "D"])
+        konsoli = console.Console(self.bib, stubio, self.forms)
+        konsoli.edit_source()
+
+        self.assertIsNone(self.bib.get("foo"))
+        outputs = "\n".join(stubio.outputs)
+        self.assertIn("Lähde 'foo' poistettu", outputs)

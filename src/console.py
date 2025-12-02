@@ -111,7 +111,7 @@ class Console:
                     break
                 self.konsoli_io.kirjoita("Atribuutin sisältö:")
                 src_value = self.konsoli_io.lue('=>')
-                tiedot.append({src_type: src_value})
+                tiedot.append({"type": src_type, "value": src_value})
 
             #Kysymme käyttäjältä, onko hän varma, että annetut arvot ovat oikein
             self.konsoli_io.kirjoita("Olemme lisäämässä seuraavan lähteen, onko se oikein?")
@@ -247,11 +247,15 @@ class Console:
             if src_value == "":
                 break
             if src_value== "D":
-                self.konsoli_io.kirjoita("Poistamme lähteen")
+                self.konsoli_io.kirjoita(f"Lähde '{old_key}' poistettu")
                 self.bib.remove(old_key)
+                return
             elif src_value == "Q":
                 return
-            elif self.bib.get(src_value):
+            elif any(
+                e.get_identifier().lower() == src_value.lower()
+                for e in self.bib.get_all_entries()
+            ):
                 self.konsoli_io.kirjoita("Samanarvoinen avain on jo olemassa, lisää parempi.")
             else:
                 new_key = src_value
@@ -297,6 +301,11 @@ class Console:
         # jos käyttäjä syöttää tyhjän, ei järjestetä
         if attr == "":
             self.konsoli_io.kirjoita("Atribuutti ei voi olla tyhjä.")
+            return
+
+        # tarkistetaan, löytyykö attribuuttia yhtään
+        if all(entry.get_value(attr) is None for entry in self.bib.get_all_entries()):
+            self.konsoli_io.kirjoita(f"Atribuuttia '{attr}' ei löydy yhdeltäkään lähteeltä.")
             return
 
         self.konsoli_io.kirjoita("Järjestetäänkö laskevasti?")
