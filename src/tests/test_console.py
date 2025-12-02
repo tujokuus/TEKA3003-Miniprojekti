@@ -67,7 +67,7 @@ class TestConsole(unittest.TestCase):
         )
 
     def test_add_empty_title(self):
-        stubio = StubIO(["book", "baa", "Luukas", "", "Wise works by Luke", "JYU", "2025",
+        stubio = StubIO(["book", "baa", "Luukas", "Wise works by Luke", ""," JYU" , "2025",
          "", "", "", "", "", "", "", "", "", "Y"])
         konsoli = console.Console(self.bib, stubio, self.json)
         konsoli.ask_new_source()

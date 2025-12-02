@@ -71,7 +71,6 @@ class Console:
 
         self.__form_source(tyyppi, required, optional)
 
-
     def __form_source(self, tyyppi, required, optional):
         epavarma = True
 

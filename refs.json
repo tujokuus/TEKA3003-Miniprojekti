@@ -2,255 +2,693 @@
     "Reference_types": [
         {
             "name": "article",
-            "required": [
-                "author",
-                "title",
-                "journal",
-                "year"
-            ],
-            "optional": [
-                "volume",
-                "number",
-                "pages",
-                "month",
-                "note",
-                "annote"
+            "fields": [
+                {
+                    "name": "author",
+                    "required": true
+                },
+                {
+                    "name": "title",
+                    "required": true
+                },
+                {
+                    "name": "journal",
+                    "required": true
+                },
+                {
+                    "name": "year",
+                    "required": true
+                },
+                {
+                    "name": "volume",
+                    "required": false
+                },
+                {
+                    "name": "number",
+                    "required": false
+                },
+                {
+                    "name": "pages",
+                    "required": false
+                },
+                {
+                    "name": "month",
+                    "required": false
+                },
+                {
+                    "name": "note",
+                    "required": false
+                },
+                {
+                    "name": "annote",
+                    "required": false
+                }
             ]
         },
         {
             "name": "book",
-            "required": [
-                "author",
-                "title",
-                "publisher",
-                "year"
-            ],
-            "optional": [
-                "volume",
-                "number",
-                "series",
-                "address",
-                "edition",
-                "month",
-                "note",
-                "annote"
+            "fields": [
+                {
+                    "name": "author",
+                    "required": true
+                },
+                {
+                    "name": "title",
+                    "required": true
+                },
+                {
+                    "name": "publisher",
+                    "required": true
+                },
+                {
+                    "name": "year",
+                    "required": true
+                },
+                {
+                    "name": "volume",
+                    "required": false
+                },
+                {
+                    "name": "number",
+                    "required": false
+                },
+                {
+                    "name": "series",
+                    "required": false
+                },
+                {
+                    "name": "address",
+                    "required": false
+                },
+                {
+                    "name": "edition",
+                    "required": false
+                },
+                {
+                    "name": "month",
+                    "required": false
+                },
+                {
+                    "name": "note",
+                    "required": false
+                },
+                {
+                    "name": "annote",
+                    "required": false
+                }
             ]
         },
         {
             "name": "booklet",
-            "required": [
-                "title"
-            ],
-            "optional": [
-                "author",
-                "howpublished",
-                "address",
-                "month",
-                "year",
-                "note",
-                "annote"
+            "fields": [
+                {
+                    "name": "title",
+                    "required": true
+                },
+                {
+                    "name": "author",
+                    "required": false
+                },
+                {
+                    "name": "howpublished",
+                    "required": false
+                },
+                {
+                    "name": "address",
+                    "required": false
+                },
+                {
+                    "name": "month",
+                    "required": false
+                },
+                {
+                    "name": "year",
+                    "required": false
+                },
+                {
+                    "name": "note",
+                    "required": false
+                },
+                {
+                    "name": "annote",
+                    "required": false
+                }
             ]
         },
         {
             "name": "conference",
-            "required": [
-                "author",
-                "title"
-            ],
-            "optional": [
-                "booktitle ",
-                "year",
-                "editor",
-                "volume",
-                "number",
-                "series",
-                "pages",
-                "month",
-                "address",
-                "organization",
-                "publisher",
-                "note",
-                "annote"
+            "fields": [
+                {
+                    "name": "author",
+                    "required": true
+                },
+                {
+                    "name": "title",
+                    "required": true
+                },
+                {
+                    "name": "booktitle",
+                    "required": false
+                },
+                {
+                    "name": "year",
+                    "required": false
+                },
+                {
+                    "name": "editor",
+                    "required": false
+                },
+                {
+                    "name": "volume",
+                    "required": false
+                },
+                {
+                    "name": "number",
+                    "required": false
+                },
+                {
+                    "name": "series",
+                    "required": false
+                },
+                {
+                    "name": "pages",
+                    "required": false
+                },
+                {
+                    "name": "month",
+                    "required": false
+                },
+                {
+                    "name": "address",
+                    "required": false
+                },
+                {
+                    "name": "organization",
+                    "required": false
+                },
+                {
+                    "name": "publisher",
+                    "required": false
+                },
+                {
+                    "name": "note",
+                    "required": false
+                },
+                {
+                    "name": "annote",
+                    "required": false
+                }
             ]
         },
         {
             "name": "inbook",
-            "required": [
-                "author",
-                "title",
-                "chapter",
-                "publisher",
-                "year"
-            ],
-            "optional": [
-                "volume",
-                "number",
-                "series",
-                "type",
-                "address",
-                "edition",
-                "month",
-                "pages",
-                "note",
-                "annote"
+            "fields": [
+                {
+                    "name": "author",
+                    "required": true
+                },
+                {
+                    "name": "title",
+                    "required": true
+                },
+                {
+                    "name": "chapter",
+                    "required": true
+                },
+                {
+                    "name": "publisher",
+                    "required": true
+                },
+                {
+                    "name": "year",
+                    "required": true
+                },
+                {
+                    "name": "volume",
+                    "required": false
+                },
+                {
+                    "name": "number",
+                    "required": false
+                },
+                {
+                    "name": "series",
+                    "required": false
+                },
+                {
+                    "name": "type",
+                    "required": false
+                },
+                {
+                    "name": "address",
+                    "required": false
+                },
+                {
+                    "name": "edition",
+                    "required": false
+                },
+                {
+                    "name": "month",
+                    "required": false
+                },
+                {
+                    "name": "pages",
+                    "required": false
+                },
+                {
+                    "name": "note",
+                    "required": false
+                },
+                {
+                    "name": "annote",
+                    "required": false
+                }
             ]
         },
         {
             "name": "incollection",
-            "required": [
-                "author",
-                "title",
-                "booktitle"
-            ],
-            "optional": [
-                "publisher",
-                "year",
-                "editor",
-                "volume",
-                "number",
-                "series",
-                "type",
-                "chapter",
-                "pages",
-                "edition",
-                "month",
-                "address",
-                "note",
-                "annote"
+            "fields": [
+                {
+                    "name": "author",
+                    "required": true
+                },
+                {
+                    "name": "title",
+                    "required": true
+                },
+                {
+                    "name": "booktitle",
+                    "required": true
+                },
+                {
+                    "name": "publisher",
+                    "required": false
+                },
+                {
+                    "name": "year",
+                    "required": false
+                },
+                {
+                    "name": "editor",
+                    "required": false
+                },
+                {
+                    "name": "volume",
+                    "required": false
+                },
+                {
+                    "name": "number",
+                    "required": false
+                },
+                {
+                    "name": "series",
+                    "required": false
+                },
+                {
+                    "name": "type",
+                    "required": false
+                },
+                {
+                    "name": "chapter",
+                    "required": false
+                },
+                {
+                    "name": "pages",
+                    "required": false
+                },
+                {
+                    "name": "edition",
+                    "required": false
+                },
+                {
+                    "name": "month",
+                    "required": false
+                },
+                {
+                    "name": "address",
+                    "required": false
+                },
+                {
+                    "name": "note",
+                    "required": false
+                },
+                {
+                    "name": "annote",
+                    "required": false
+                }
             ]
         },
         {
             "name": "inproceedngs",
-            "required": [
-                "author",
-                "title"
-            ],
-            "optional": [
-                "booktitle",
-                "year",
-                "editor",
-                "volume",
-                "number ",
-                "series",
-                "pages",
-                "month",
-                "address",
-                "organization",
-                "publisher",
-                "note",
-                "annote"
+            "fields": [
+                {
+                    "name": "author",
+                    "required": true
+                },
+                {
+                    "name": "title",
+                    "required": true
+                },
+                {
+                    "name": "booktitle",
+                    "required": false
+                },
+                {
+                    "name": "year",
+                    "required": false
+                },
+                {
+                    "name": "editor",
+                    "required": false
+                },
+                {
+                    "name": "volume",
+                    "required": false
+                },
+                {
+                    "name": "number",
+                    "required": false
+                },
+                {
+                    "name": "series",
+                    "required": false
+                },
+                {
+                    "name": "pages",
+                    "required": false
+                },
+                {
+                    "name": "month",
+                    "required": false
+                },
+                {
+                    "name": "address",
+                    "required": false
+                },
+                {
+                    "name": "organization",
+                    "required": false
+                },
+                {
+                    "name": "publisher",
+                    "required": false
+                },
+                {
+                    "name": "note",
+                    "required": false
+                },
+                {
+                    "name": "annote",
+                    "required": false
+                }
             ]
         },
         {
             "name": "manual",
-            "required": [
-                "title"
-            ],
-            "optional": [
-                "author",
-                "organization",
-                "address",
-                "edition",
-                "month",
-                "year",
-                "note",
-                "annote"
+            "fields": [
+                {
+                    "name": "title",
+                    "required": true
+                },
+                {
+                    "name": "author",
+                    "required": false
+                },
+                {
+                    "name": "organization",
+                    "required": false
+                },
+                {
+                    "name": "address",
+                    "required": false
+                },
+                {
+                    "name": "edition",
+                    "required": false
+                },
+                {
+                    "name": "month",
+                    "required": false
+                },
+                {
+                    "name": "year",
+                    "required": false
+                },
+                {
+                    "name": "note",
+                    "required": false
+                },
+                {
+                    "name": "annote",
+                    "required": false
+                }
             ]
         },
         {
             "name": "mastersthesis",
-            "required": [
-                "author",
-                "title",
-                "school",
-                "year"
-            ],
-            "optional": [
-                "type",
-                "address",
-                "month",
-                "note",
-                "annote"
+            "fields": [
+                {
+                    "name": "author",
+                    "required": true
+                },
+                {
+                    "name": "title",
+                    "required": true
+                },
+                {
+                    "name": "school",
+                    "required": true
+                },
+                {
+                    "name": "year",
+                    "required": true
+                },
+                {
+                    "name": "type",
+                    "required": false
+                },
+                {
+                    "name": "address",
+                    "required": false
+                },
+                {
+                    "name": "month",
+                    "required": false
+                },
+                {
+                    "name": "note",
+                    "required": false
+                },
+                {
+                    "name": "annote",
+                    "required": false
+                }
             ]
         },
         {
             "name": "phdthesis",
-            "required": [
-                "author",
-                "title",
-                "school",
-                "year"
-            ],
-            "optional": [
-                "type",
-                "address",
-                "month",
-                "note",
-                "annote"
+            "fields": [
+                {
+                    "name": "author",
+                    "required": true
+                },
+                {
+                    "name": "title",
+                    "required": true
+                },
+                {
+                    "name": "school",
+                    "required": true
+                },
+                {
+                    "name": "year",
+                    "required": true
+                },
+                {
+                    "name": "type",
+                    "required": false
+                },
+                {
+                    "name": "address",
+                    "required": false
+                },
+                {
+                    "name": "month",
+                    "required": false
+                },
+                {
+                    "name": "note",
+                    "required": false
+                },
+                {
+                    "name": "annote",
+                    "required": false
+                }
             ]
         },
         {
             "name": "proceedngs",
-            "required": [
-                "title",
-                "year"
-            ],
-            "optional": [
-                "booktitle",
-                "editor",
-                "volume",
-                "number",
-                "series",
-                "address",
-                "month",
-                "organization",
-                "publisher",
-                "note",
-                "annote"
+            "fields": [
+                {
+                    "name": "title",
+                    "required": true
+                },
+                {
+                    "name": "year",
+                    "required": true
+                },
+                {
+                    "name": "booktitle",
+                    "required": false
+                },
+                {
+                    "name": "editor",
+                    "required": false
+                },
+                {
+                    "name": "volume",
+                    "required": false
+                },
+                {
+                    "name": "number",
+                    "required": false
+                },
+                {
+                    "name": "series",
+                    "required": false
+                },
+                {
+                    "name": "address",
+                    "required": false
+                },
+                {
+                    "name": "month",
+                    "required": false
+                },
+                {
+                    "name": "organization",
+                    "required": false
+                },
+                {
+                    "name": "publisher",
+                    "required": false
+                },
+                {
+                    "name": "note",
+                    "required": false
+                },
+                {
+                    "name": "annote",
+                    "required": false
+                }
             ]
         },
         {
             "name": "teachreport",
-            "required": [
-                "author",
-                "title",
-                "institution",
-                "year"
-            ],
-            "optional": [
-                "type",
-                "number",
-                "address",
-                "month",
-                "note",
-                "annote"
+            "fields": [
+                {
+                    "name": "author",
+                    "required": true
+                },
+                {
+                    "name": "title",
+                    "required": true
+                },
+                {
+                    "name": "institution",
+                    "required": true
+                },
+                {
+                    "name": "year",
+                    "required": true
+                },
+                {
+                    "name": "type",
+                    "required": false
+                },
+                {
+                    "name": "number",
+                    "required": false
+                },
+                {
+                    "name": "address",
+                    "required": false
+                },
+                {
+                    "name": "month",
+                    "required": false
+                },
+                {
+                    "name": "note",
+                    "required": false
+                },
+                {
+                    "name": "annote",
+                    "required": false
+                }
             ]
         },
         {
             "name": "unpublished",
-            "required": [
-                "author",
-                "title"
-            ],
-            "optional": [
-                "note",
-                "month",
-                "year",
-                "annote"
+            "fields": [
+                {
+                    "name": "author",
+                    "required": true
+                },
+                {
+                    "name": "title",
+                    "required": true
+                },
+                {
+                    "name": "note",
+                    "required": false
+                },
+                {
+                    "name": "month",
+                    "required": false
+                },
+                {
+                    "name": "year",
+                    "required": false
+                },
+                {
+                    "name": "annote",
+                    "required": false
+                }
             ]
         },
         {
             "name": "misc",
-            "required": [
-                "author",
-                "title",
-                "howpublished",
-                "month",
-                "year",
-                "note",
-                "annote"
-            ],
-            "optional": []
+            "fields": [
+                {
+                    "name": "author",
+                    "required": false
+                },
+                {
+                    "name": "title",
+                    "required": false
+                },
+                {
+                    "name": "howpublished",
+                    "required": false
+                },
+                {
+                    "name": "month",
+                    "required": false
+                },
+                {
+                    "name": "year",
+                    "required": false
+                },
+                {
+                    "name": "note",
+                    "required": false
+                },
+                {
+                    "name": "annote",
+                    "required": false
+                }
+            ]
         }
     ]
 }
