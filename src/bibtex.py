@@ -2,13 +2,20 @@
 This file provides methods for handling the content (a.k.a references) of bibtex files
 '''
 
+import json
 import bibtexparser # type: ignore
 
 class Fields:
     """ Class for handling the json file containing referencce types  """
 
-    def __init__(self, ref_types):
-        self.reference_types = ref_types
+    def __init__(self):
+        # Read reference types from refs.json file
+        try:
+            with open('refs.json', 'r',encoding='utf-8') as file:
+                data = json.load(file)
+        except FileNotFoundError:
+            print("Error: file 'refs.json' not found.")
+        self.reference_types = data['Reference_types']
 
     def get_required(self, name):
         """Gets all required fields of a reference type by name"""

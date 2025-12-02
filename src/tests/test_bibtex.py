@@ -60,7 +60,7 @@ class TestBibtex(unittest.TestCase):
     year = {1990},
     journal = {American Educator}
 }""")
-        
+
     def test_search(self):
         bib_content = """@article{toinenTestid,
     author = {Jyrki},
@@ -82,7 +82,7 @@ class TestBibtex(unittest.TestCase):
         self.assertEqual(bib.search("matti")[0].get_identifier(), "testid")
         self.assertEqual(len(bib.search("emt")), 2)
         self.assertEqual(len(bib.search("emt", "title")), 1)
-    
+
     def test_sort(self):
         bib_content = """@article{toinenTestid,
     author = {Jyrki},
@@ -116,8 +116,7 @@ class TestBibtex(unittest.TestCase):
         self.assertEqual(ordered_by_year[2].get_value("year"), "2007")
         self.assertEqual(ordered_by_author[1].get_value("author"), "matti meikäläinen")
         self.assertEqual(ordered_by_author[2].get_value("author"), "matti nykänen")
-        
+
         # Test for sorting by missing fields always getting sorted to last place
         self.assertEqual(ordered_by_journal[2].get_value("title"), "Meikäläisen harkkatyö")
         self.assertEqual(ordered_by_journal_desc[2].get_value("title"), "Meikäläisen harkkatyö")
-        

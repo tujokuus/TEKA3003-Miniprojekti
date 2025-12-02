@@ -9,10 +9,21 @@ class StubIO:
         self.outputs = []
 
     def lue(self, _teksti):
-        return self.inputs.pop(0)
+        try:
+            i = self.inputs.pop(0)
+        except IndexError as exc:
+            print("StubIO: no available input left")
+            raise exc
+        print(f"StubIO: read {i}")
+        return i
 
     def kirjoita(self, teksti):
+        print(f"StubIO: write {teksti}")
         self.outputs.append(teksti)
+
+    def lisaa_syote(self, teksti):
+        print(f"StubIO: input {teksti}")
+        self.inputs.append(teksti)
 
 
 class TestConsole(unittest.TestCase):
@@ -21,14 +32,7 @@ class TestConsole(unittest.TestCase):
         entry = bibtex.Entry("foo", "article")
         entry.add_value("title", "Testi artikkeli")
         self.bib.add(entry)
-
-         # Read reference types from refs.json file
-        try:
-            with open('refs.json', 'r',encoding='utf-8') as file:
-                data = json.load(file)
-        except FileNotFoundError:
-            print("Error: file 'refs.json' not found.")
-        self.json = bibtex.Fields(data['Reference_types'])
+        self.json = bibtex.Fields()
 
     def test_add_new_source(self):
         stubio = StubIO(["book", "baa", "Luukas", "Wise works by Luke", "JYU", "2025",

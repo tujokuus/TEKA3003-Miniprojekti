@@ -3,21 +3,11 @@ Main for our reference helper
 '''
 
 import sys
-import json
-import bibtex
-import console
-
+from app import App
+from console import Console, KonsoliIO
+from bibtex import Bibtex, Fields
 
 if __name__ == "__main__":
-
-    # Read reference types from refs.json file
-    try:
-        with open('refs.json', 'r',encoding='utf-8') as file:
-            data = json.load(file)
-    except FileNotFoundError:
-        print("Error: file 'refs.json' not found.")
-    json = bibtex.Fields(data['Reference_types'])
-
     # Parse arguments
     if len(sys.argv) <= 1:
         print(f"Usage: {sys.argv[0]} <file.bib>")
@@ -25,25 +15,24 @@ if __name__ == "__main__":
     filename = sys.argv[1]
 
     # Attempt to load bibtex from provided file
-    bib = bibtex.Bibtex()
+    bibtex = Bibtex()
     try:
         with open(filename, "r", encoding="utf-8") as file:
             bib_string = file.read()
-            bib.read(bib_string)
+            bibtex.read(bib_string)
     except FileNotFoundError:
         print("Warning: provided bibtex file not found, generating one when saved")
 
-    # Print bib contents
-    print(bib)
-
-    #Aktivoidaan konsoli (kysytään käyttäjältä uusi tiedosto)
-    konsoli = console.Console(bib, console.KonsoliIO(), json)
-    konsoli.activate()
+    io = KonsoliIO()
+    formaatit = Fields()
+    console = Console(bibtex, io, formaatit)
+    app = App(console)
+    app.run()
 
     # Save bibtex (a.k.a database) to file
     try:
         with open(filename, "w", encoding="utf-8") as file:
-            file.write(str(bib))
+            file.write(str(bibtex))
     except IOError:
         print("Could not save file!")
         sys.exit(1)

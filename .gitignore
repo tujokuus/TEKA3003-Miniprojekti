@@ -2,3 +2,10 @@ __pycache__
 .coverage
 htmlcov
 *.bib
+
+# Robot Framework output
+output.xml
+log.html
+report.html
+xunit.xml
+TEXT
