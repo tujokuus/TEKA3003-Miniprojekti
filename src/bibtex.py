@@ -160,6 +160,11 @@ class Bibtex:
 
         Returns a list of found entries.
         """
+
+        # DEBUGGING TODO POISTA kun valmis
+        print(f"Searchia kutsuttu bibtex oliossa")
+        return
+
         found = []
         processed_search_term = search_term.strip().lower()
         for entry in self.entries:
