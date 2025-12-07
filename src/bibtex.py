@@ -4,6 +4,7 @@ This file provides methods for handling the content (a.k.a references) of bibtex
 
 import json
 import bibtexparser # type: ignore
+import requests
 
 class Fields:
     """ Class for handling the json file containing referencce types  """
@@ -127,6 +128,22 @@ class Bibtex:
     def add(self, entry):
         """Adds an entry (a.k.a reference) to list of all entries in bibtex file"""
         self.entries.append(entry)
+
+    def add_doi(self, doi):
+        """Adds an entry (a.k.a reference) to list of all entries in bibtex file by doi"""
+        url = ""
+        baseurl = "https://doi.org/"
+        if doi.startswith("https"):
+            url = doi
+        elif doi.startswith("doi:"):
+            url = baseurl + doi[4:]
+        else:
+            url = baseurl + doi
+        req = requests.get(url, timeout=10, headers={"Accept": "text/bibliography; style=bibtex"})
+        if req.status_code != 200:
+            raise FileNotFoundError
+        bib_string = req.text
+        self.read(bib_string)
 
     def remove(self, identifier):
         """Removes an entry (a.k.a reference) with matching identifier"""
