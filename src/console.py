@@ -225,5 +225,11 @@ class Console:
             self.konsoli_io.kirjoita(str(entry))
 
     def search_sources(self):
-        print("searchia kutsuttu console oliossa")
-        searced_entries = self.bib.search("testi")
+        """ Käyttäjä suorittaa lähteiden haun """       
+        print("Voidaan hakea nimen, julkaisijan ja vuosiluvun mukaan")
+        search_term = self.konsoli_io.lue("Anna hakusana:")
+        found = self.bib.search(search_term)
+        self.konsoli_io.kirjoita(f"Löydettiin {len(found)} lähdettä:")
+
+        for entry in found:
+            self.konsoli_io.kirjoita(str(entry))
