@@ -155,3 +155,16 @@ class TestConsole(unittest.TestCase):
         # tarkistetaan että Z-title tulostui ennen Testi artikkeli
         outputs = "\n".join(stubio.outputs)
         self.assertLess(outputs.index("Z-title"), outputs.index("Testi artikkeli"))
+
+    def test_search_sources(self):
+        stubio = StubIO(["Testi"])
+        konsoli = console.Console(self.bib, stubio, self.json)
+        konsoli.search_sources()
+
+        self.assertTrue(
+            any("Löydettiin 1 lähdettä:" in out for out in stubio.outputs)
+        )
+
+        self.assertTrue(
+            any("Testi artikkeli" in out for out in stubio.outputs)
+        )
