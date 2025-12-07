@@ -140,6 +140,7 @@ class Bibtex:
         else:
             url = baseurl + doi
         req = requests.get(url, timeout=10, headers={"Accept": "text/bibliography; style=bibtex"})
+        req.encoding = 'utf-8'
         if req.status_code != 200:
             raise FileNotFoundError
         bib_string = req.text
