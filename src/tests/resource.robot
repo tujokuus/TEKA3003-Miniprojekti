@@ -23,6 +23,9 @@ Input Sort Sources Command
 Input Quit Command
     Input  q
 
+Input Add New Source By Doi Command
+    Input  d
+
 Start Application
     Run Application
 
@@ -43,6 +46,11 @@ Input Article
     Input Nothing
     Input Yes Command
 
+Input Source By Doi
+    [Arguments]  ${source_doi}
+    Input Add New Source By Doi Command
+    Input  ${source_doi}
+
 Input No Optionals
     Input Nothing
     Input Nothing
@@ -60,4 +68,9 @@ Create Sources
     Input Article  source_key=testiavain2  source_author=Pertti Perttinen  source_title=Pertin kootut  source_journal=Epäluotettava lähde  source_year=2000
     Input Add New Source Command
     Input Article  source_key=testiavain3  source_author=Antti Anttinen  source_title=Kaikki parhaat lohkaisuni  source_journal=Legit lähde  source_year=200
-    
+
+Input Sort Sources According To Field Command
+    [Arguments]  ${field}
+    Input Sort Sources Command
+    Input  ${field}
+    Input Yes Command

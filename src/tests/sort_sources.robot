@@ -4,25 +4,19 @@ Test Setup  Create Sources
 
 *** Test Cases ***
 Sort Sources According To Author
-    Input Sort Sources Command
-    Input  author
-    Input Yes Command
+    Input Sort Sources According To Field Command  author
     Input Quit Command
     Run Application
     Output Should Contain  Lähteet järjestetty attribuutin 'author' mukaan:
 
 Sort Sources According To Title
-    Input Sort Sources Command
-    Input  title
-    Input Yes Command
+    Input Sort Sources According To Field Command  title
     Input Quit Command
     Run Application
     Output Should Contain  Lähteet järjestetty attribuutin 'title' mukaan:
 
 Sort Sources According To Year
-    Input Sort Sources Command
-    Input  year
-    Input Yes Command
+    Input Sort Sources According To Field Command  year
     Input Quit Command
     Run Application
     Output Should Contain  Lähteet järjestetty attribuutin 'year' mukaan:
