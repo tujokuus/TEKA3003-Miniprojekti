@@ -32,6 +32,7 @@ class Console:
             self.konsoli_io.kirjoita("'A' lisää uusi lähde, ")
             self.konsoli_io.kirjoita("'B' muokataan/poistetaan olemassa olevaa lähdetta, ")
             self.konsoli_io.kirjoita("'C' järjestetään lähteet atribuutin mukaan, ")
+            self.konsoli_io.kirjoita("'D' lisää lähde DOI tunnisteen perusteella")
             self.konsoli_io.kirjoita("'S' haetaan lähteitä, ")
             self.konsoli_io.kirjoita("'Q' poistutaan sovelluksesta. ")
             confirmation = self.konsoli_io.lue('=>')
@@ -44,6 +45,8 @@ class Console:
                 self.sort_sources()
             elif confirmation.strip().upper() == "S":
                 self.search_sources()
+            elif confirmation.strip().upper() == "D":
+                self.doi_add()
             elif confirmation.strip().upper() == "Q":
                 self.konsoli_io.kirjoita("Kiitoksia käytöstä")
                 active = False
@@ -182,6 +185,15 @@ class Console:
         palautus["value"] = src_value
         return palautus
 
+    # Lisätään doin perusteella uusi lähde
+    def doi_add(self):
+        self.konsoli_io.kirjoita("Anna DOI")
+        doi = self.konsoli_io.lue("=> ").strip()
+        try:
+            self.bib.add_doi(doi)
+            self.konsoli_io.kirjoita("Lähde lisättiin onnistuneesti")
+        except FileNotFoundError as _exc:
+            self.konsoli_io.kirjoita("Ei lähteitä annetulle DOI-tunnukselle")
 
     #Otetaan uusi lähde käsittelyyn ja editoidaan sen arvoja
     #Jos uudeksi arvoksi sijoitetaan tyhjä, se poistetaan
