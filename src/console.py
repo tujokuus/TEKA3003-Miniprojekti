@@ -198,7 +198,6 @@ class Console:
         except FileNotFoundError as _exc:
             self.konsoli_io.kirjoita("Ei lähteitä annetulle DOI-tunnukselle")
 
-    
     def acm_add(self):
         """ Lisätään acm linkin perusteella uusi lähde """
         self.konsoli_io.kirjoita("Syötä ACM linkki")
