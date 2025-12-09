@@ -35,6 +35,7 @@ class Console:
             self.konsoli_io.kirjoita("'D' lisää lähde DOI tunnisteen perusteella")
             self.konsoli_io.kirjoita("'M' lisää lähde ACM linkillä")
             self.konsoli_io.kirjoita("'S' haetaan lähteitä, ")
+            self.konsoli_io.kirjoita("'L' listaa kaikki lähteet")
             self.konsoli_io.kirjoita("'Q' poistutaan sovelluksesta. ")
             confirmation = self.konsoli_io.lue('=>')
 
@@ -50,6 +51,8 @@ class Console:
                 self.doi_add()
             elif confirmation.strip().upper() == "M":
                 self.acm_add()
+            elif confirmation.strip().upper() == "L":
+                self.list_all_sources()
             elif confirmation.strip().upper() == "Q":
                 self.konsoli_io.kirjoita("Kiitoksia käytöstä")
                 active = False
@@ -440,4 +443,16 @@ class Console:
         self.konsoli_io.kirjoita(f"Löydettiin {len(found)} lähdettä:")
 
         for entry in found:
+            self.konsoli_io.kirjoita(str(entry))
+
+
+    def list_all_sources(self):
+        entries = self.bib.get_all_entries()
+
+        if not entries:
+            self.konsoli_io.kirjoita("Ei yhtään lähdettä.")
+            return
+
+        self.konsoli_io.kirjoita("Kaikki lähteet:\n")
+        for entry in entries:
             self.konsoli_io.kirjoita(str(entry))

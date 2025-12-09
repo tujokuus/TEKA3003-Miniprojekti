@@ -20,6 +20,9 @@ Input Edit Source Command
 Input Sort Sources Command
     Input  c
 
+Input List Sources Command
+    Input  l
+
 Input Quit Command
     Input  q
 
