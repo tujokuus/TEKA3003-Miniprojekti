@@ -120,3 +120,19 @@ class TestBibtex(unittest.TestCase):
         # Test for sorting by missing fields always getting sorted to last place
         self.assertEqual(ordered_by_journal[2].get_value("title"), "Meikäläisen harkkatyö")
         self.assertEqual(ordered_by_journal_desc[2].get_value("title"), "Meikäläisen harkkatyö")
+
+    def test_add_valid_acm_link(self):
+        acm_link = "https://dl.acm.org/doi/10.1145/2380552.2380613"
+        bib = bibtex.Bibtex()
+        bib.add_acm_link(acm_link)
+        self.assertIn("Three years of design-based research to reform a software engineering curriculum", str(bib))
+
+    def test_add_invalid_acm_link(self):
+        acm_link = "https://linkkijkl.fi"
+        bib = bibtex.Bibtex()
+        try:
+            bib.add_acm_link(acm_link)
+        except:
+            return
+        self.assertTrue(False)
+    

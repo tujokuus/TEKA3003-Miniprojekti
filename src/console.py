@@ -43,10 +43,11 @@ class Console:
         active = True
         while active:
             self.konsoli_io.kirjoita("Vaihtoehtona ovat: ")
-            self.konsoli_io.kirjoita("'A' lisää uusi lähde, ")
+            self.konsoli_io.kirjoita("'A' lisää uusi lähde")
             self.konsoli_io.kirjoita("'B' muokataan/poistetaan olemassa olevaa lähdetta, ")
             self.konsoli_io.kirjoita("'C' järjestetään lähteet atribuutin mukaan, ")
             self.konsoli_io.kirjoita("'D' lisää lähde DOI tunnisteen perusteella")
+            self.konsoli_io.kirjoita("'M' lisää lähde ACM linkillä")
             self.konsoli_io.kirjoita("'S' haetaan lähteitä, ")
             self.konsoli_io.kirjoita("'Q' poistutaan sovelluksesta. ")
             confirmation = self.konsoli_io.lue('=>')
@@ -61,6 +62,8 @@ class Console:
                 self.search_sources()
             elif confirmation.strip().upper() == "D":
                 self.doi_add()
+            elif confirmation.strip().upper() == "M":
+                self.acm_add()
             elif confirmation.strip().upper() == "Q":
                 self.konsoli_io.kirjoita("Kiitoksia käytöstä")
                 active = False
@@ -199,15 +202,25 @@ class Console:
         palautus["value"] = src_value
         return palautus
 
-    # Lisätään doin perusteella uusi lähde
     def doi_add(self):
-        self.konsoli_io.kirjoita("Anna DOI")
+        """ Lisätään doin perusteella uusi lähde """
+        self.konsoli_io.kirjoita("Syötä DOI")
         doi = self.konsoli_io.lue("=> ").strip()
         try:
             self.bib.add_doi(doi)
             self.konsoli_io.kirjoita("Lähde lisättiin onnistuneesti")
         except FileNotFoundError as _exc:
             self.konsoli_io.kirjoita("Ei lähteitä annetulle DOI-tunnukselle")
+
+    def acm_add(self):
+        """ Lisätään acm linkin perusteella uusi lähde """
+        self.konsoli_io.kirjoita("Syötä ACM linkki")
+        url = self.konsoli_io.lue("=> ").strip()
+        try:
+            self.bib.add_acm_link(url)
+            self.konsoli_io.kirjoita("Lähde lisättiin onnistuneesti")
+        except FileNotFoundError as _exc:
+            self.konsoli_io.kirjoita("Ei lähteitä annetulle ACM linkille")
 
     #Otetaan uusi lähde käsittelyyn ja editoidaan sen arvoja
     #Jos uudeksi arvoksi sijoitetaan tyhjä, se poistetaan
@@ -342,8 +355,8 @@ class Console:
 
     def search_sources(self):
         """ Käyttäjä suorittaa lähteiden haun """       
-        print("Voidaan hakea titlen, julkaisijan ja vuosiluvun mukaan\n"
-              "Minkä mukaan haetaan? (title/author/year) Jätä tyhjäksi hakeaksesi kaikista.")
+        print("Voidaan hakea eri kenttien, esimerkiksi title, author ja year mukaan\n"
+              "Minkä kentän mukaan haetaan? Jätä tyhjäksi hakeaksesi lähteiden kaikista kentistä.")
         value_type = self.konsoli_io.lue("=>")
         if value_type.strip() == "":
             value_type = None

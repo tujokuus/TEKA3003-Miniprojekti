@@ -151,6 +151,17 @@ class Bibtex:
         bib_string = req.text
         self.read(bib_string)
 
+    def add_acm_link(self, url: str):
+        """Adds an entry to list of all entries in bibtex file by link to acm.org"""
+        doi_position = url.find("doi")
+        if doi_position < 0:
+            raise FileNotFoundError
+        doi_part = url[doi_position:]
+        doi = doi_part.replace("/", ":", 1)
+        if doi == "":
+            raise FileNotFoundError
+        self.add_doi(doi)
+
     def remove(self, identifier):
         """Removes an entry (a.k.a reference) with matching identifier"""
         for entry in self.entries:
