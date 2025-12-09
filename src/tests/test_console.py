@@ -34,9 +34,9 @@ class TestConsole(unittest.TestCase):
         self.json = bibtex.Fields()
 
         class FakeForms:
-            def get_required(self, t):
+            def get_required(self):
                 return ["title"]
-            def get_optional(self, t):
+            def get_optional(self):
                 return ["author"]
 
         self.forms = FakeForms()

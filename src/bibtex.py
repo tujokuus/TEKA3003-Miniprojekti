@@ -88,7 +88,6 @@ class Entry:
 
     def get_value_types(self):
         """Returns a list of all value types contained in this entry"""
-        print(self.values.keys())
         return self.values.keys()
 
     def get_identifier(self):

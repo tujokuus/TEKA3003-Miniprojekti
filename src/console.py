@@ -20,20 +20,6 @@ class Console:
         # jotta voimme vertailla niitä uuteen lisättävään (esim. samannimiset avaimet)
         self.konsoli_io = konsoli_io
 
-    #Käydään läpi käsiteltävän lähteen kaikki pakolliset tietokentät,
-    # katsotaan jos niissä on jo jotakin ja ilmoitetaan se käyttäjälle
-    #Käyttäjä EI VOI poistaa/jättää tyhjäksi atribuuttia, mutta voi skipata
-    #Käyttäjä voi  poistua välittömästi muokkauksesta painamalla 'q' näppäntä
-    def __edit_required(self, lahde, required, poistutaan):
-        pass
-            
-
-    #Käydään läpi käsiteltävän lähteen kaikki tietokentät, jotka eivät ole required listassa
-    # katsotaan jos niissä on jo jotakin ja ilmoitetaan se käyttäjälle
-    #Käyttäjä VOI poistaa/jättää tyhjäksi atribuutin valitsemalla 'd', ja voi skipata muokkauksen '' arvolla
-    #Käyttäjä voi  poistua välittömästi muokkauksesta painamalla 'q' näppäntä
-    def __edit_extras(self, lahde, required, all_fields, poistutaan):
-        pass
 
     #Kysyy käyttäjältä mitä hän haluaa tehdä, ja ohjataan sen mukaiseen aliohjelmaan
     def activate(self):
@@ -70,6 +56,7 @@ class Console:
             else:
                 self.konsoli_io.kirjoita("Antamaanne käskyä ei tunnistettu, antakaa se uudestaan")
 
+
     #Kysytään uusi lähde (tällä hetkellä automaattisesti article)
     def ask_new_source(self):
         """ Käyttäjältä kysytään uuden lisättävän lähteen tiedot """
@@ -93,6 +80,7 @@ class Console:
                 epavarma = False
 
         self.__form_source(tyyppi, required, optional)
+
 
     def __form_source(self, tyyppi, required, optional):
         epavarma = True
@@ -202,6 +190,7 @@ class Console:
         palautus["value"] = src_value
         return palautus
 
+
     def doi_add(self):
         """ Lisätään doin perusteella uusi lähde """
         self.konsoli_io.kirjoita("Syötä DOI")
@@ -212,6 +201,7 @@ class Console:
         except FileNotFoundError as _exc:
             self.konsoli_io.kirjoita("Ei lähteitä annetulle DOI-tunnukselle")
 
+
     def acm_add(self):
         """ Lisätään acm linkin perusteella uusi lähde """
         self.konsoli_io.kirjoita("Syötä ACM linkki")
@@ -221,6 +211,7 @@ class Console:
             self.konsoli_io.kirjoita("Lähde lisättiin onnistuneesti")
         except FileNotFoundError as _exc:
             self.konsoli_io.kirjoita("Ei lähteitä annetulle ACM linkille")
+
 
     #Otetaan uusi lähde käsittelyyn ja editoidaan sen arvoja
     #Jos uudeksi arvoksi sijoitetaan tyhjä, se poistetaan
@@ -247,12 +238,14 @@ class Console:
             syote = self.konsoli_io.lue('=> ').strip()
 
             for lahde in lahteet:
+                if syote.upper() == "Q":
+                    return
                 if lahde.get_identifier() == syote:
                     self.konsoli_io.kirjoita("Lähde löydetty, aletaan muokkaus/poisto")
                     self.konsoli_io.kirjoita("Atribuutit käydään läpi yksi kerrallaan,")
                     self.konsoli_io.kirjoita("Paina enter skipataksesi atribuutin")
                     self.konsoli_io.kirjoita("Paina'd' symboli poistaaksesi atribuutin")
-                    self.konsoli_io.kirjoita("Paina'q' symboli poitsuaksesi muokkauksesta")
+                    self.konsoli_io.kirjoita("Paina'q' symboli poistuaksesi muokkauksesta")
                     self.konsoli_io.kirjoita("HUOMIO: Jos poistat key arvon, poistat koko lähteen!")
 
                     self.__edit_specific_source(lahde)
@@ -260,6 +253,7 @@ class Console:
                     return
 
             self.konsoli_io.kirjoita("Annetulla avaimella ei löydetty lähdettä, yritä uudestaan")
+
 
     def __edit_specific_source(self, lahde):
         """ Editoidaan tiettyä lähdettä """
@@ -270,22 +264,23 @@ class Console:
         invalid = True
         while invalid:
             self.konsoli_io.kirjoita(f"Muokataan avainta: {old_key}")
-            src_value = self.konsoli_io.lue('=> ').strip().upper()
+            src_value = self.konsoli_io.lue('=> ').strip()
 
             if src_value == "":
                 break
-            if src_value== "D":
+            if src_value.upper() == "D":
                 self.konsoli_io.kirjoita(f"Lähde '{old_key}' poistettu")
                 self.bib.remove(old_key)
                 return
-            elif src_value == "Q":
+            if src_value.upper() == "Q":
                 return
-            elif any(
+            if any(
                 e.get_identifier().lower() == src_value.lower()
                 for e in self.bib.get_all_entries()
             ):
                 self.konsoli_io.kirjoita("Samanarvoinen avain on jo olemassa, lisää parempi.")
             else:
+                self.konsoli_io.kirjoita(f"Tallennetaan uusi avain {src_value}")
                 new_key = src_value
                 lahde.set_identifier(new_key)
                 invalid = False
@@ -294,13 +289,13 @@ class Console:
         required = self.forms.get_required(tyyppi)
         all_fields = lahde.get_value_types()
 
-        poistutaan = False
-        self.__edit_required(lahde, required, poistutaan)
+        poistutaan = self.__edit_required(lahde, required)
         if poistutaan:
             return
-        self.__edit_extras(lahde, required, all_fields, poistutaan)
+        poistutaan = self.__edit_extras(lahde, required, all_fields)
         if poistutaan:
             return
+
         lisaa = True
         while lisaa:
             self.konsoli_io.kirjoita("Lisää vapaa arvo? Jätä nimi tyhjäksi jos ei.")
@@ -317,6 +312,76 @@ class Console:
         self.bib.remove(old_key)
         self.bib.add(lahde)
 
+
+    #Käydään läpi käsiteltävän lähteen kaikki pakolliset tietokentät,
+    # katsotaan jos niissä on jo jotakin ja ilmoitetaan se käyttäjälle
+    #Käyttäjä EI VOI poistaa/jättää tyhjäksi atribuuttia, mutta voi skipata
+    #Käyttäjä voi poistua välittömästi muokkauksesta painamalla 'q' näppäntä
+    #Palautetaan true/false arvo jos käyttäjä haluaa poistua muokkauksesta
+    def __edit_required(self, lahde, required):
+
+        for sisalto in required:
+            old_value = lahde.get_value(sisalto)
+
+            loopataan = True
+
+            while loopataan:
+                self.konsoli_io.kirjoita(f"Lähteeseen vaaditaan tieto: {sisalto}")
+                self.konsoli_io.kirjoita(f"Tällä hetkellä tiedossa on arvo: {old_value}")
+                src_value = self.konsoli_io.lue('=> ').strip()
+                if src_value == "":
+                    loopataan = False
+                elif src_value.upper() == "D":
+                    self.konsoli_io.kirjoita("Pakollista tietoa ei voi poistaa")
+                elif src_value.upper() == "Q":
+                    return True
+                else:
+                    lahde.add_value(sisalto, src_value)
+                    self.konsoli_io.kirjoita(f"Tallennetaan tieto {sisalto}, arvolla {src_value}")
+                    loopataan = False
+
+        return False
+
+
+    #Käydään läpi käsiteltävän lähteen kaikki tietokentät, jotka eivät ole required listassa
+    # katsotaan jos niissä on jo jotakin ja ilmoitetaan se käyttäjälle
+    #Käyttäjä VOI poistaa/jättää tyhjäksi atribuutin valitsemalla 'd',
+    # ja voi skipata muokkauksen '' arvolla
+    #Käyttäjä voi  poistua välittömästi muokkauksesta painamalla 'q' näppäntä
+    def __edit_extras(self, lahde, required, all_fields):
+        poistettavat = []
+
+        for sisalto in all_fields:
+
+            if sisalto in required:
+                continue
+            old_value = lahde.get_value(sisalto)
+
+            loopataan = True
+
+            while loopataan:
+                self.konsoli_io.kirjoita(f"Lähteeseen on lisätty tieto: {sisalto}")
+                self.konsoli_io.kirjoita(f"Tällä hetkellä tiedossa on arvo: {old_value}")
+                src_value = self.konsoli_io.lue('=> ').strip()
+                if src_value == "":
+                    loopataan = False
+                elif src_value.upper() == "D":
+                    self.konsoli_io.kirjoita(f"Poistetaan tieto {old_value}")
+                    poistettavat.append(sisalto)
+                    loopataan = False
+                elif src_value.upper() == "Q":
+                    return True
+                else:
+                    lahde.add_value(sisalto, src_value)
+                    self.konsoli_io.kirjoita(f"Tallennetaan tieto {sisalto}, arvolla {src_value}")
+                    loopataan = False
+
+        #Lopuksi poistetaan (jottei käpelöidä dictin kokoa loopin aikana)
+        #kaikki merkityt tyypit
+        for poisto in poistettavat:
+            lahde.remove_value(poisto)
+
+        return False
 
     #Kysytään käyttäjältä lähteen atribuutti ja järjestetään ne sen mukaan
     #Jos lähteellä ei ole annettua atribuuttia, pistetään ne listan perälle muuttamatta?
@@ -352,6 +417,7 @@ class Console:
 
         for entry in sorted_entries:
             self.konsoli_io.kirjoita(str(entry))
+
 
     def search_sources(self):
         """ Käyttäjä suorittaa lähteiden haun """       
