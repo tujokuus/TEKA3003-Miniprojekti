@@ -226,9 +226,15 @@ class Console:
 
     def search_sources(self):
         """ Käyttäjä suorittaa lähteiden haun """       
-        print("Voidaan hakea nimen, julkaisijan ja vuosiluvun mukaan")
-        search_term = self.konsoli_io.lue("Anna hakusana:")
+        print("Voidaan hakea nimen, julkaisijan ja vuosiluvun mukaan\n"
+              "Anna hakusana")
+        search_term = self.konsoli_io.lue("=>")
         found = self.bib.search(search_term)
+        if len(found) == 0:
+            self.konsoli_io.kirjoita(
+                f"Annetulla hakusanalle '{search_term}' ei löydetty yhtään lähdettä.")
+            return
+        
         self.konsoli_io.kirjoita(f"Löydettiin {len(found)} lähdettä:")
 
         for entry in found:
