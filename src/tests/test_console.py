@@ -163,6 +163,7 @@ class TestConsole(unittest.TestCase):
         outputs = "\n".join(stubio.outputs)
         self.assertLess(outputs.index("Z-title"), outputs.index("Testi artikkeli"))
 
+
     def test_sort_invalid_attribute(self):
         # luodaan testibib
         e1 = bibtex.Entry("testi1", "article")
@@ -192,3 +193,17 @@ class TestConsole(unittest.TestCase):
         self.assertIsNone(self.bib.get("foo"))
         outputs = "\n".join(stubio.outputs)
         self.assertIn("Lähde 'foo' poistettu", outputs)
+
+    def test_search_sources(self):
+
+        stubio = StubIO(["title","Testi"])
+        konsoli = console.Console(self.bib, stubio, self.json)
+        konsoli.search_sources()
+
+        self.assertTrue(
+            any("Löydettiin 1 lähdettä:" in out for out in stubio.outputs)
+        )
+
+        self.assertTrue(
+            any("Testi artikkeli" in out for out in stubio.outputs)
+        )
