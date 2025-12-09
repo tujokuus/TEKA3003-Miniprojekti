@@ -94,3 +94,17 @@ Add Source By Doi In Http Form
     Input Quit Command
     Run Application
     Output Should Contain  Mineralogical and environmental effects on the δ13C, δ18O, and clumped isotope composition of modern bryozoans
+
+Add Source By Acm.org Link
+    Input Source By Acm.org Link  https://dl.acm.org/doi/10.1145/2380552.2380613
+    Input Sort Sources According To Field Command  author
+    Input Quit Command
+    Run Application
+    Output Should Contain  Three years of design-based research to reform a software engineering curriculum
+
+Add Source By Invalid Acm.org Link
+    Input Source By Acm.org Link  https://dl.acm.org/doi/10.1145/2380552.nonexistent
+    Input Sort Sources According To Field Command  author
+    Input Quit Command
+    Run Application
+    Output Should Contain  Ei lähteitä annetulle ACM linkille
