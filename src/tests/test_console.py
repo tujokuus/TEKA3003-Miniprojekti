@@ -158,7 +158,7 @@ class TestConsole(unittest.TestCase):
 
     def test_search_sources(self):
 
-        stubio = StubIO(["","Testi"])
+        stubio = StubIO(["title","Testi"])
         konsoli = console.Console(self.bib, stubio, self.json)
         konsoli.search_sources()
 
