@@ -57,7 +57,7 @@ class Console:
                 self.konsoli_io.kirjoita("Antamaanne käskyä ei tunnistettu, antakaa se uudestaan")
 
 
-    #Kysytään uusi lähde (tällä hetkellä automaattisesti article)
+    #Kysytään uusi lähde dynaamisesti
     def ask_new_source(self):
         """ Käyttäjältä kysytään uuden lisättävän lähteen tiedot """
         epavarma = True
@@ -115,9 +115,11 @@ class Console:
             for tieto in tiedot:
                 if tieto is not None:
                     self.konsoli_io.kirjoita(f"{tieto['type']}: {tieto['value']}")
-            confirmation = self.konsoli_io.lue('[Y/N]')
+            confirmation = self.konsoli_io.lue('[Y/N/Q]')
             if confirmation.strip().upper() == "Y":
                 epavarma = False
+            elif confirmation.strip().upper() == "Q":
+                return
 
         #Viedään hyvaksytty dict olio tallennettavaksi bibtex oliolle
         self.konsoli_io.kirjoita("Tallennetaan lähde")
@@ -309,7 +311,7 @@ class Console:
             lahde.add_value(src_type, src_value)
 
         self.konsoli_io.kirjoita("Tallennetaan uusi muokattu lähde.")
-        self.bib.remove(old_key)
+        self.bib.remove(new_key)
         self.bib.add(lahde)
 
 
