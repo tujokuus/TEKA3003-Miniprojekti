@@ -26,6 +26,9 @@ Input Quit Command
 Input Add New Source By Doi Command
     Input  d
 
+Input Add New Source By Acm.org Link Command
+    Input  m
+
 Start Application
     Run Application
 
@@ -51,6 +54,11 @@ Input Source By Doi
     Input Add New Source By Doi Command
     Input  ${source_doi}
 
+Input Source By Acm.org Link
+    [Arguments]  ${source_link}
+    Input Add New Source By Acm.org Link Command
+    Input  ${source_link}
+
 Input No Optionals
     Input Nothing
     Input Nothing
@@ -74,3 +82,4 @@ Input Sort Sources According To Field Command
     Input Sort Sources Command
     Input  ${field}
     Input Yes Command
+
