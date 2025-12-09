@@ -78,9 +78,13 @@ class Entry:
         """Removes value assigned to wanted value type" (a.k.a field)"""
         self.values.pop(value_type)
 
+    def get_ref_type(self):
+        "Returns the reference type of the entry"
+        return self.reference_type
+
     def get_value(self, value_type):
         """Returns the value of wanted value type (a.k.a field)"""
-        return self.values[value_type]
+        return self.values.get(value_type)
 
     def get_value_types(self):
         """Returns a list of all value types contained in this entry"""
@@ -163,6 +167,10 @@ class Bibtex:
             if entry.get_identifier() == identifier:
                 self.entries.remove(entry)
 
+    def get_all_entries(self):
+        """Returns all entries in bibtex"""
+        return self.entries
+
     def get(self, identifier):
         """Returns an entry (a.k.a reference) with matching identifier"""
         for entry in self.entries:
@@ -213,20 +221,18 @@ class Bibtex:
         The sort is in ascending order by default, but this can be changed by argument `desc`.
         """
 
-        with_value_type = []
-        without_value_type = []
-        for entry in self.entries:
-            try:
-                entry.get_value(value_type)
-                with_value_type.append(entry)
-            except KeyError as _exc:
-                without_value_type.append(entry)
-
         def key(entry):
-            return entry.get_value(value_type).strip().lower()
-        sorted_entries = sorted(with_value_type, key=key , reverse=desc)
+            val = entry.get_value(value_type)
+            if val is None:
+                return ""
+            return val.strip().lower()
 
-        return sorted_entries + without_value_type
+        sorted_entries = sorted(self.entries, key=key , reverse=desc)
+
+        with_value = [e for e in sorted_entries if e.get_value(value_type) is not None]
+        without_value = [e for e in sorted_entries if e.get_value(value_type) is None]
+
+        return with_value + without_value
 
     def __str__(self):
         r = ""
