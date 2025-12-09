@@ -157,7 +157,8 @@ class TestConsole(unittest.TestCase):
         self.assertLess(outputs.index("Z-title"), outputs.index("Testi artikkeli"))
 
     def test_search_sources(self):
-        stubio = StubIO(["Testi"])
+
+        stubio = StubIO(["","Testi"])
         konsoli = console.Console(self.bib, stubio, self.json)
         konsoli.search_sources()
 
