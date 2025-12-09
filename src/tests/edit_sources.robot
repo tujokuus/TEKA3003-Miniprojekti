@@ -7,11 +7,14 @@ Test Setup  Create Sources
 Edit Existing Source Successfully
     Input Edit Source Command
     Input  testiavain2
+    Input  uusitestiavain
+    Input  Matti Meikalainen
+    Input  Uusi uljas muokattu otsikko
+    Input  Nothing
+    Input  -100
+
     Input Nothing
 
-    Input  year
-    Input  2
-    Input Nothing
     Input Quit Command
 
     Run Application
