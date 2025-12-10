@@ -32,6 +32,9 @@ Input Add New Source By Doi Command
 Input Add New Source By Acm.org Link Command
     Input  m
 
+Input Search Sources Command
+    Input  s
+
 Start Application
     Run Application
 
@@ -86,3 +89,14 @@ Input Sort Sources According To Field Command
     Input  ${field}
     Input Yes Command
 
+Delete Source According To Key
+    [Arguments]  ${key}
+    Input Edit Source Command
+    Input  ${key}
+    Input  d
+
+Search Source According To Field Command
+    [Arguments]  ${field}  ${searchterm}
+    Input Search Sources Command
+    Input  ${field}
+    Input  ${searchterm}

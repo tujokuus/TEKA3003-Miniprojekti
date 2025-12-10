@@ -51,3 +51,37 @@ Delete Existing Source Successfully
     Output Should Contain  poistettu
     Output Should Contain  testiavain2
     Output Should Contain  testiavain3
+
+Edit Nonexistant Source
+    Input Edit Source Command
+    Input  testiavain6742069
+    Input Quit Command
+    Input Quit Command
+    Start Application
+    Output Should Contain  Annetulla avaimella ei löydetty lähdettä, yritä uudestaan
+
+Start Editing But Change Mind And Stop
+    Input Edit Source Command
+    Input Quit Command
+    Input Quit Command
+    Start Application
+    Output Should Contain  Lahde: testiavain1;
+
+Change Key To Already Existing One
+    Input Edit Source Command
+    Input  testiavain1
+    Input  testiavain1
+    Input Nothing
+    Input Nothing
+    Input Nothing
+    Input Nothing
+    Input Nothing
+    Input Nothing
+    Input Nothing
+    Input Nothing
+    Input Nothing
+    Input Nothing
+    Input Nothing
+    Input Quit Command
+    Start Application
+    Output Should Contain  Samanarvoinen avain on jo olemassa, lisää parempi.
