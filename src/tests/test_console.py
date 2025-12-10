@@ -1,5 +1,6 @@
 import unittest
 import bibtex
+import fields
 import console
 
 class StubIO:
@@ -31,7 +32,7 @@ class TestConsole(unittest.TestCase):
         entry = bibtex.Entry("foo", "article")
         entry.add_value("title", "Testi artikkeli")
         self.bib.add(entry)
-        self.json = bibtex.Fields()
+        self.json = fields.Fields()
 
         class FakeForms:
             def get_required(self):
