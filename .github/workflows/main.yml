@@ -22,10 +22,10 @@ jobs:
         run: pip install poetry
       - name: Install dependencies
         run: poetry install --no-root
-      - name: Run tests
+      - name: Run unit tests
         run: poetry run coverage run --branch -m pytest
-      - name: Run Robot tests
-        run: poetry run robot src
+      - name: Run system tests
+        run: poetry run coverage run --branch --append -m robot src
       - name: Pylint
         run: poetry run pylint src
       - name: Coverage report
