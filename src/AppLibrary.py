@@ -1,5 +1,6 @@
 from tests.test_console import StubIO
-from bibtex import Bibtex, Fields
+from bibtex import Bibtex
+from fields import Fields
 from console import Console
 from app import App
 

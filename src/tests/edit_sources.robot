@@ -85,3 +85,21 @@ Change Key To Already Existing One
     Input Quit Command
     Start Application
     Output Should Contain  Samanarvoinen avain on jo olemassa, lisää parempi.
+
+Remove Existing Key
+    Input Edit Source Command
+    Input  testiavain1
+    Input Nothing
+    Input Nothing
+    Input Nothing
+    Input Nothing
+    Input Nothing
+    Input Remove Attribute Command
+
+    Input Nothing
+
+    Input Quit Command
+
+    Run Application
+
+    Output Should Contain  Tallennetaan uusi muokattu

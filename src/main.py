@@ -5,7 +5,8 @@ Main for our reference helper
 import sys
 from app import App
 from console import Console, KonsoliIO
-from bibtex import Bibtex, Fields
+from bibtex import Bibtex
+from fields import Fields
 
 if __name__ == "__main__":
     # Parse arguments
