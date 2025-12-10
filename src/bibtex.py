@@ -101,8 +101,6 @@ class Bibtex:
             raise FileNotFoundError
         doi_part = url[doi_position:]
         doi = doi_part.replace("/", ":", 1)
-        if doi == "":
-            raise FileNotFoundError
         self.add_doi(doi)
 
     def remove(self, identifier):
@@ -150,11 +148,11 @@ class Bibtex:
                         found.append(entry)
                         break
                 continue
-            try:
-                if processed_search_term in entry.get_value(value_type).lower():
-                    found.append(entry)
-            except KeyError as _exc:
+            value = entry.get_value(value_type)
+            if value is None:
                 continue
+            if processed_search_term in value.lower():
+                found.append(entry)
         return found
 
     def sort(self, value_type: str, desc: bool = False):
@@ -180,9 +178,6 @@ class Bibtex:
 
     def __str__(self):
         r = ""
-        length = len(self.entries)
-        for index, entry in enumerate(self.entries):
+        for entry in self.entries:
             r += str(entry)
-            if index != length - 1:
-                r += "\n\n"
         return r

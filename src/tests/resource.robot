@@ -35,6 +35,9 @@ Input Add New Source By Acm.org Link Command
 Input Search Sources Command
     Input  s
 
+Input Remove Attribute Command
+    Input  d
+
 Start Application
     Run Application
 
@@ -47,6 +50,23 @@ Input Article
     Input  ${source_journal}
     Input  ${source_year}
     Input Nothing
+    Input Nothing
+    Input Nothing
+    Input Nothing
+    Input Nothing
+    Input Nothing
+    Input Nothing
+    Input Yes Command
+
+Input Article With Optional Field
+   [Arguments]  ${source_key}  ${source_author}  ${source_title}  ${source_journal}  ${source_year}  ${source_annote}=
+    Input  article
+    Input  ${source_key}
+    Input  ${source_author}
+    Input  ${source_title}
+    Input  ${source_journal}
+    Input  ${source_year}
+    Input  ${source_annote}
     Input Nothing
     Input Nothing
     Input Nothing
@@ -77,7 +97,7 @@ Input No Optionals
 
 Create Sources
     Input Add New Source Command
-    Input Article  source_key=testiavain1  source_author=Jaska Jokunen  source_title=Jaska Jokusen elämänkerta  source_journal=Epäluotettava lähde  source_year=2030
+    Input Article With Optional Field  source_key=testiavain1  source_author=Jaska Jokunen  source_title=Jaska Jokusen elämänkerta  source_journal=Epäluotettava lähde  source_year=2030  source_annote=annote
     Input Add New Source Command
     Input Article  source_key=testiavain2  source_author=Pertti Perttinen  source_title=Pertin kootut  source_journal=Epäluotettava lähde  source_year=2000
     Input Add New Source Command
