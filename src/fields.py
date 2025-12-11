@@ -110,7 +110,7 @@ class Fields:
         ],
     },
     {
-        "name": "inproceedngs",
+        "name": "inproceedings",
         "fields": [
             {"name": "author", "required": True},
             {"name": "title", "required": True},
@@ -251,10 +251,12 @@ class Fields:
 
     def get_fields(self, name):
         """Gets all fields of a reference type by name"""
+        fields = set()
         for ref in self.reference_types:
             if ref['name'] == name.lower():
-                return ref['fields']
-        return None
+                for field in ref['fields']:
+                    fields.add(field['name'])
+        return fields
 
     def get_ref_names(self):
         """Gets names of all reference types"""
