@@ -140,7 +140,7 @@ class TestConsole(unittest.TestCase):
 
     def test_sort_from_main_menu(self):
         # C = sort, annetaan attribuutti title, järjestys N (asc), lopuksi Q
-        stubio = StubIO(["C", "title", "N", "Q"])
+        stubio = StubIO(["O", "title", "N", "Q"])
         konsoli = console.Console(self.bib, stubio, self.json)
         konsoli.activate()
 

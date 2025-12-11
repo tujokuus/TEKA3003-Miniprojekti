@@ -22,14 +22,14 @@ Sort Sources According To Year
     Output Should Contain  Lähteet järjestetty attribuutin 'year' mukaan:
 
 Sort Sources According To Empty Value
-    Input  c
+    Input  o
     Input Nothing
     Input Quit Command
     Run Application
     Output Should Contain  Atribuutti ei voi olla tyhjä
 
 Sort Sources According To Nonexistant Value
-    Input  c
+    Input  o
     Input  hakusana
     Input Quit Command
     Run Application
