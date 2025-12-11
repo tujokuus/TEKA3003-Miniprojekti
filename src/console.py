@@ -8,11 +8,22 @@ class KonsoliIO:
     def kirjoita(self, teksti):
         print(teksti)
 
-
 class Console:
     """ Console olio kysyy ja suorittaa käyttäjältä haluttavia toimintoja """
 
     def __init__(self, bib_olio, konsoli_io, formaatit):
+        self.options = {
+            "A": self.ask_new_source,
+            "E": self.edit_source,
+            "O": self.sort_sources,
+            "D": self.doi_add,
+            "M": self.acm_add,
+            "S": self.search_sources,
+            "L": self.list_all_sources,
+            "H": self.list_options,
+            "R": self.return_to_start,
+            "Q": self.exit}
+        self.active = False
         self.bib = bib_olio
         #Olio sisältää pakolliset atrbituutit eri lähde tyypeille
         self.forms = formaatit
@@ -24,41 +35,51 @@ class Console:
     #Kysyy käyttäjältä mitä hän haluaa tehdä, ja ohjataan sen mukaiseen aliohjelmaan
     def activate(self):
         """ Aktivoi konsolin, käyttäjä ohjataan 'main menuun' """
-        self.konsoli_io.kirjoita("Tervetuloa 'Bib tiedosto lukijaan', mitä tehtäisiin?")
 
-        active = True
-        while active:
-            self.konsoli_io.kirjoita("Vaihtoehtona ovat: ")
-            self.konsoli_io.kirjoita("'A' lisää uusi lähde")
-            self.konsoli_io.kirjoita("'B' muokataan/poistetaan olemassa olevaa lähdetta, ")
-            self.konsoli_io.kirjoita("'C' järjestetään lähteet atribuutin mukaan, ")
-            self.konsoli_io.kirjoita("'D' lisää lähde DOI tunnisteen perusteella")
-            self.konsoli_io.kirjoita("'M' lisää lähde ACM linkillä")
-            self.konsoli_io.kirjoita("'S' haetaan lähteitä, ")
-            self.konsoli_io.kirjoita("'L' listaa kaikki lähteet")
-            self.konsoli_io.kirjoita("'Q' poistutaan sovelluksesta. ")
-            confirmation = self.konsoli_io.lue('=>')
+        # Luo alun valinta ikkunan
+        self.konsoli_io.kirjoita("""Tervetuloa 'Bib tiedosto lukijaan', mitä tehtäisiin?\n
+            Vaihtoehtona ovat: \n
+            'A' lisää uusi viite
+            'E' muokkaa/poista olemassa oleva viite
+            'O' järjestä viitteet kentän mukaan
+            'D' lisää viite DOI tunnisteen perusteella
+            'M' lisää viite ACM linkillä
+            'S' hae viite hakusanalla 
+            'L' listaa kaikki viitteet
+            'Q' poistu sovelluksesta""")
 
-            if confirmation.strip().upper() == "A":
-                self.ask_new_source()
-            elif confirmation.strip().upper() == "B":
-                self.edit_source()
-            elif confirmation.strip().upper() == "C":
-                self.sort_sources()
-            elif confirmation.strip().upper() == "S":
-                self.search_sources()
-            elif confirmation.strip().upper() == "D":
-                self.doi_add()
-            elif confirmation.strip().upper() == "M":
-                self.acm_add()
-            elif confirmation.strip().upper() == "L":
-                self.list_all_sources()
-            elif confirmation.strip().upper() == "Q":
-                self.konsoli_io.kirjoita("Kiitoksia käytöstä")
-                active = False
+        self.active = True
+        while self.active:
+            self.konsoli_io.kirjoita("""
+             'R' - palaa alkutilaan
+             'H' - komentovaihtoehdot""")
+
+            cmd = self.konsoli_io.lue('=>').strip().upper()
+            if cmd in self.options:
+                self.options[cmd]()
             else:
                 self.konsoli_io.kirjoita("Antamaanne käskyä ei tunnistettu, antakaa se uudestaan")
 
+    #Palaa alkutilaan
+    def return_to_start(self):
+        print("Coming soon!")
+
+    #Poistutaan ohjelmasta
+    def exit(self):
+        self.konsoli_io.kirjoita("Kiitoksia käytöstä")
+        self.active = False
+
+    #Listaa käyttäjälle komentovaihtoehdot
+    def list_options(self):
+        self.konsoli_io.kirjoita("""Vaihtoehtona ovat: \n
+            'A' lisää uusi viite
+            'E' muokkaa/poista olemassa oleva viite
+            'O' järjestä viitteet kentän mukaan
+            'D' lisää viite DOI tunnisteen perusteella
+            'M' lisää viite ACM linkillä
+            'S' hae viite hakusanalla 
+            'L' listaa kaikki viitteet
+            'Q' poistu sovelluksesta""")
 
     #Kysytään uusi lähde dynaamisesti
     def ask_new_source(self):
@@ -426,7 +447,7 @@ class Console:
 
     def search_sources(self):
         """ Käyttäjä suorittaa lähteiden haun """       
-        print("Voidaan hakea eri kenttien, esimerkiksi title, author ja year mukaan\n"
+        print("Voit hakea joko vain hakusanalla, tai hakusanan ja viitteen kentän mukaan"
               "Minkä kentän mukaan haetaan? Jätä tyhjäksi hakeaksesi lähteiden kaikista kentistä.")
         value_type = self.konsoli_io.lue("=>")
         if value_type.strip() == "":

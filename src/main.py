@@ -11,7 +11,7 @@ from fields import Fields
 if __name__ == "__main__":
     # Parse arguments
     if len(sys.argv) <= 1:
-        print(f"Usage: {sys.argv[0]} <file.bib>")
+        print(f"Käyttö: {sys.argv[0]} <esimerkki_file.bib>")
         sys.exit(1)
     filename = sys.argv[1]
 

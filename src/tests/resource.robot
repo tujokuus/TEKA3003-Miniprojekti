@@ -15,10 +15,10 @@ Input Add New Source Command
     Input  a
 
 Input Edit Source Command
-    Input  b
+    Input  e
 
 Input Sort Sources Command
-    Input  c
+    Input  o
 
 Input List Sources Command
     Input  l
@@ -36,7 +36,7 @@ Input Search Sources Command
     Input  s
 
 Input Remove Attribute Command
-    Input  d
+    Input  e
 
 Start Application
     Run Application
