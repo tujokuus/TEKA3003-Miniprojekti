@@ -438,6 +438,9 @@ class Console:
             self.konsoli_io.kirjoita("Atribuutti ei voi olla tyhjä.")
             return
 
+        if attr.upper() == 'Q':
+            return
+
         # tarkistetaan, löytyykö attribuuttia yhtään
         if all(entry.get_value(attr) is None for entry in self.bib.get_all_entries()):
             self.konsoli_io.kirjoita(f"Atribuuttia '{attr}' ei löydy yhdeltäkään lähteeltä.")
@@ -468,9 +471,13 @@ class Console:
         value_type = self.konsoli_io.lue("=>")
         if value_type.strip() == "":
             value_type = None
+        elif value_type.strip().upper() == "Q":
+            return
 
         print("Anna hakusana:")
         search_term = self.konsoli_io.lue("=>")
+        if search_term.strip().upper() == "Q":
+            return
         found = self.bib.search(search_term, value_type)
         if len(found) == 0:
             self.konsoli_io.kirjoita(
