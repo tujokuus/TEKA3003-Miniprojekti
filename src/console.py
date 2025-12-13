@@ -91,9 +91,11 @@ class Console:
             required = self.forms.get_required(tyyppi)
             if not required:
                 self.konsoli_io.kirjoita("Luokkaa ei tunnistettu, lisätäänkö se kuitenkin?")
-                confirmation = self.konsoli_io.lue('[Y/N]')
+                confirmation = self.konsoli_io.lue('[Y/N/Q]')
                 if confirmation.strip().upper() == "Y":
                     epavarma = False
+                elif confirmation.strip().upper() == "Q":
+                    return
             else:
                 optional = self.forms.get_optional(tyyppi)
                 epavarma = False
