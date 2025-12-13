@@ -27,3 +27,4 @@ never-returning-functions=
 
 [DESIGN]
 max-statements=150
+max-branches=20
