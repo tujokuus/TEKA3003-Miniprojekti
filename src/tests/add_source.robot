@@ -12,6 +12,7 @@ Add Source With Valid Source Key And Source Name
 Add Source With New Type
     Input Add New Source Command
     Input  kissa
+    Input  Y
     Input  kissa-avain
     Input Nothing
     Input Yes Command
