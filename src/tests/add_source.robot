@@ -73,3 +73,38 @@ Give False Command
     Input Quit Command
     Run Application
     Output Should Contain  Antamaanne käskyä ei tunnistettu, antakaa se uudestaan
+
+Add Source By Doi
+    Input Source By Doi  doi:10.1016/j.chemgeo.2024.122148
+    Input Sort Sources According To Field Command  author
+    Input Quit Command
+    Run Application
+    Output Should Contain  Mineralogical and environmental effects on the δ13C, δ18O, and clumped isotope composition of modern bryozoans
+
+Add Source By Nonexistent Doi
+    Input Source By Doi  doi:10.404/nonexistent.2024.122148
+    Input Sort Sources According To Field Command  author
+    Input Quit Command
+    Run Application
+    Output Should Contain  Ei lähteitä annetulle DOI-tunnukselle
+
+Add Source By Doi In Http Form
+    Input Source By Doi  https://doi.org/10.1016/j.chemgeo.2024.122148
+    Input Sort Sources According To Field Command  author
+    Input Quit Command
+    Run Application
+    Output Should Contain  Mineralogical and environmental effects on the δ13C, δ18O, and clumped isotope composition of modern bryozoans
+
+Add Source By Acm.org Link
+    Input Source By Acm.org Link  https://dl.acm.org/doi/10.1145/2380552.2380613
+    Input Sort Sources According To Field Command  author
+    Input Quit Command
+    Run Application
+    Output Should Contain  Three years of design-based research to reform a software engineering curriculum
+
+Add Source By Invalid Acm.org Link
+    Input Source By Acm.org Link  https://dl.acm.org/doi/10.1145/2380552.nonexistent
+    Input Sort Sources According To Field Command  author
+    Input Quit Command
+    Run Application
+    Output Should Contain  Ei lähteitä annetulle ACM linkille

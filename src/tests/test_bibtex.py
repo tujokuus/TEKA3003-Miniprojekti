@@ -45,6 +45,29 @@ class TestBibtex(unittest.TestCase):
         self.assertIsNotNone(entry)
         self.assertEqual(entry.get_value("author"), "matti nykänen")
 
+    def test_iteration(self):
+        bib_content = """@article{toinenTestid,
+    author = {Jyrki},
+    title = {toinen emt},
+    year = {2007},
+    journal = {Iltalehti}
+}
+
+@article{testid,
+    author = {matti nykänen},
+    title = {emt},
+    year = {1990},
+    journal = {American Educator},
+    hyehee = {testidataa}
+}
+"""
+        bib = bibtex.Bibtex()
+        bib.read(bib_content)
+        a = ""
+        for entry in bib:
+            a += entry.get_identifier()
+        self.assertEqual(a, "toinenTestidtestid")
+
     def test_save_bib(self):
         bib = bibtex.Bibtex()
         entry = bibtex.Entry("testid", "article")
@@ -74,14 +97,14 @@ class TestBibtex(unittest.TestCase):
     title = {testidataa},
     year = {1990},
     journal = {American Educator},
-    hyehee = {emt}
+    annote = {emt}
 }
 """
         bib = bibtex.Bibtex()
         bib.read(bib_content)
         self.assertEqual(bib.search("matti")[0].get_identifier(), "testid")
         self.assertEqual(len(bib.search("emt")), 2)
-        self.assertEqual(len(bib.search("emt", "title")), 1)
+        self.assertEqual(len(bib.search("emt", "annote")), 1)
 
     def test_sort(self):
         bib_content = """@article{toinenTestid,
@@ -120,3 +143,14 @@ class TestBibtex(unittest.TestCase):
         # Test for sorting by missing fields always getting sorted to last place
         self.assertEqual(ordered_by_journal[2].get_value("title"), "Meikäläisen harkkatyö")
         self.assertEqual(ordered_by_journal_desc[2].get_value("title"), "Meikäläisen harkkatyö")
+
+    def test_add_valid_acm_link(self):
+        acm_link = "https://dl.acm.org/doi/10.1145/2380552.2380613"
+        bib = bibtex.Bibtex()
+        bib.add_acm_link(acm_link)
+        self.assertIn("Three years of design-based research to reform a software engineering curriculum", str(bib))
+
+    def test_add_invalid_acm_link(self):
+        bib = bibtex.Bibtex()
+        self.assertRaises(FileNotFoundError, lambda: bib.add_acm_link("https://linkkijkl.fi"))
+        self.assertRaises(FileNotFoundError, lambda: bib.add_acm_link("https://dl.acm.org/doi?10.1145/2380552.2380613"))

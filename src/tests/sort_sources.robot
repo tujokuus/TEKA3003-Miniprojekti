@@ -4,27 +4,42 @@ Test Setup  Create Sources
 
 *** Test Cases ***
 Sort Sources According To Author
-    Input Sort Sources Command
-    Input  author
-    Input Yes Command
+    Input Sort Sources According To Field Command  author
     Input Quit Command
     Run Application
     Output Should Contain  Lähteet järjestetty attribuutin 'author' mukaan:
 
 Sort Sources According To Title
-    Input Sort Sources Command
-    Input  title
-    Input Yes Command
+    Input Sort Sources According To Field Command  title
     Input Quit Command
     Run Application
     Output Should Contain  Lähteet järjestetty attribuutin 'title' mukaan:
 
 Sort Sources According To Year
-    Input Sort Sources Command
-    Input  year
-    Input Yes Command
+    Input Sort Sources According To Field Command  year
     Input Quit Command
     Run Application
     Output Should Contain  Lähteet järjestetty attribuutin 'year' mukaan:
 
-#REGEX olisi kiva, mutten saanut toimimaan. Vai onko muita tapoja tarkistaa oikea järjestys?
+Sort Sources According To Empty Value
+    Input  o
+    Input Nothing
+    Input Quit Command
+    Run Application
+    Output Should Contain  Atribuutti ei voi olla tyhjä
+
+Sort Sources According To Nonexistant Value
+    Input  o
+    Input  hakusana
+    Input Quit Command
+    Run Application
+    Output Should Contain  Atribuuttia 'hakusana' ei löydy yhdeltäkään lähteeltä.
+
+Sort No Sources
+    Delete Source According To Key  testiavain1
+    Delete Source According To Key  testiavain2
+    Delete Source According To Key  testiavain3
+    Input Sort Sources According To Field Command  year
+    Input Quit Command
+    Run Application
+    Output Should Contain  Atribuuttia 'year' ei löydy yhdeltäkään lähteeltä.

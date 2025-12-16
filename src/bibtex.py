@@ -2,63 +2,8 @@
 This file provides methods for handling the content (a.k.a references) of bibtex files
 '''
 
-import json
 import bibtexparser # type: ignore
-
-class Fields:
-    """ Class for handling the json file containing referencce types  """
-
-    def __init__(self):
-        """ Read reference types from refs.json file """
-        try:
-            with open('refs.json', 'r',encoding='utf-8') as file:
-                data = json.load(file)
-        except FileNotFoundError:
-            print("Error: file 'refs.json' not found.")
-        self.reference_types = data['Reference_types']
-
-    def get_required(self, name):
-        """Gets all required fields of a reference type by name"""
-        required = set()
-        for ref in self.reference_types:
-            if ref['name'] == name.lower():
-                for field in ref['fields']:
-                    if field['required'] is True:
-                        required.add(field['name'])
-        return sorted(required)
-
-    def get_optional(self, name):
-        """Gets all optional fields of a reference type by name"""
-        optional = set()
-        for ref in self.reference_types:
-            if ref['name'] == name.lower():
-                for field in ref['fields']:
-                    if field['required'] is False:
-                        optional.add(field['name'])
-        return sorted(optional)
-
-    def get_fields(self, name):
-        """Gets all fields of a reference type by name"""
-        for ref in self.reference_types:
-            if ref['name'] == name.lower():
-                return ref['fields']
-        return None
-
-    def get_ref_names(self):
-        """Gets names of all reference types"""
-        names = set()
-        for ref in self.reference_types:
-            names.add(ref['name'])
-        return names
-
-    def get_uniq_attrs(self):
-        "Get names of all unique attributes"
-        attrs = set()
-        for ref in self.reference_types:
-            for field in ref['fields']:
-                if field['name'] not in attrs:
-                    attrs.add(field['name'])
-        return attrs
+import requests
 
 class Entry:
     """ Class representing a single entry (a.k.a reference) in bib file  """
@@ -77,9 +22,13 @@ class Entry:
         """Removes value assigned to wanted value type" (a.k.a field)"""
         self.values.pop(value_type)
 
+    def get_ref_type(self):
+        "Returns the reference type of the entry"
+        return self.reference_type
+
     def get_value(self, value_type):
         """Returns the value of wanted value type (a.k.a field)"""
-        return self.values[value_type]
+        return self.values.get(value_type)
 
     def get_value_types(self):
         """Returns a list of all value types contained in this entry"""
@@ -128,11 +77,41 @@ class Bibtex:
         """Adds an entry (a.k.a reference) to list of all entries in bibtex file"""
         self.entries.append(entry)
 
+    def add_doi(self, doi):
+        """Adds an entry (a.k.a reference) to list of all entries in bibtex file by doi"""
+        url = ""
+        baseurl = "https://doi.org/"
+        if doi.startswith("https"):
+            url = doi
+        elif doi.startswith("doi:"):
+            url = baseurl + doi[4:]
+        else:
+            url = baseurl + doi
+        req = requests.get(url, timeout=10, headers={"Accept": "text/bibliography; style=bibtex"})
+        req.encoding = 'utf-8'
+        if req.status_code != 200:
+            raise FileNotFoundError
+        bib_string = req.text
+        self.read(bib_string)
+
+    def add_acm_link(self, url: str):
+        """Adds an entry to list of all entries in bibtex file by link to acm.org"""
+        doi_position = url.find("doi")
+        if doi_position < 0:
+            raise FileNotFoundError
+        doi_part = url[doi_position:]
+        doi = doi_part.replace("/", ":", 1)
+        self.add_doi(doi)
+
     def remove(self, identifier):
         """Removes an entry (a.k.a reference) with matching identifier"""
         for entry in self.entries:
             if entry.get_identifier() == identifier:
                 self.entries.remove(entry)
+
+    def get_all_entries(self):
+        """Returns all entries in bibtex"""
+        return self.entries
 
     def get(self, identifier):
         """Returns an entry (a.k.a reference) with matching identifier"""
@@ -169,11 +148,11 @@ class Bibtex:
                         found.append(entry)
                         break
                 continue
-            try:
-                if processed_search_term in entry.get_value(value_type).lower():
-                    found.append(entry)
-            except KeyError as _exc:
+            value = entry.get_value(value_type)
+            if value is None:
                 continue
+            if processed_search_term in value.lower():
+                found.append(entry)
         return found
 
     def sort(self, value_type: str, desc: bool = False):
@@ -184,26 +163,21 @@ class Bibtex:
         The sort is in ascending order by default, but this can be changed by argument `desc`.
         """
 
-        with_value_type = []
-        without_value_type = []
-        for entry in self.entries:
-            try:
-                entry.get_value(value_type)
-                with_value_type.append(entry)
-            except KeyError as _exc:
-                without_value_type.append(entry)
-
         def key(entry):
-            return entry.get_value(value_type).strip().lower()
-        sorted_entries = sorted(with_value_type, key=key , reverse=desc)
+            val = entry.get_value(value_type)
+            if val is None:
+                return ""
+            return val.strip().lower()
 
-        return sorted_entries + without_value_type
+        sorted_entries = sorted(self.entries, key=key , reverse=desc)
+
+        with_value = [e for e in sorted_entries if e.get_value(value_type) is not None]
+        without_value = [e for e in sorted_entries if e.get_value(value_type) is None]
+
+        return with_value + without_value
 
     def __str__(self):
         r = ""
-        length = len(self.entries)
-        for index, entry in enumerate(self.entries):
+        for entry in self.entries:
             r += str(entry)
-            if index != length - 1:
-                r += "\n\n"
         return r
