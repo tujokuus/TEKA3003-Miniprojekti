@@ -38,3 +38,6 @@ Käynnistä ohjelma antamalla juurihakemistossa komento python src/main.py *täh
 * Integroitu tuotantoon – koodi on mergetty päähaaraan ja osa toimivaa pipelinea.
 * Koodityyli – noudattaa projektin linttereitä ja formatointisääntöjä.
 * Ymmärrettävää koodia – koodi on luettavaa ja tarvittaessa kommentoitua.
+
+## Loppureportti
+[Linkki tästä](https://jyu-my.sharepoint.com/:w:/r/personal/lvvuolle_jyu_fi/Documents/Loppuraportti.docx?d=w0d68db8de6a74beea7973ea48479bfeb&csf=1&web=1&e=eOSyWd)
