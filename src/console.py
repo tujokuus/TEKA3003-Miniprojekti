@@ -21,7 +21,6 @@ class Console:
             "S": self.search_sources,
             "L": self.list_all_sources,
             "H": self.list_options,
-            "R": self.return_to_start,
             "Q": self.exit}
         self.active = False
         self.bib = bib_olio
@@ -45,13 +44,12 @@ class Console:
             'D' lisää viite DOI tunnisteen perusteella
             'M' lisää viite ACM linkillä
             'S' hae viite hakusanalla 
-            'L' listaa kaikki viitteet
-            'Q' poistu sovelluksesta""")
+            'L' listaa kaikki viitteet""")
 
         self.active = True
         while self.active:
             self.konsoli_io.kirjoita("""
-             'R' - palaa alkutilaan
+             'Q' poistu sovelluksesta/toiminnosta
              'H' - komentovaihtoehdot""")
 
             cmd = self.konsoli_io.lue('=>').strip().upper()
@@ -59,10 +57,6 @@ class Console:
                 self.options[cmd]()
             else:
                 self.konsoli_io.kirjoita("Antamaanne käskyä ei tunnistettu, antakaa se uudestaan")
-
-    #Palaa alkutilaan
-    def return_to_start(self):
-        print("Coming soon!")
 
     #Poistutaan ohjelmasta
     def exit(self):
@@ -78,8 +72,7 @@ class Console:
             'D' lisää viite DOI tunnisteen perusteella
             'M' lisää viite ACM linkillä
             'S' hae viite hakusanalla 
-            'L' listaa kaikki viitteet
-            'Q' poistu sovelluksesta""")
+            'L' listaa kaikki viitteet""")
 
     #Kysytään uusi lähde dynaamisesti
     def ask_new_source(self):
@@ -92,13 +85,17 @@ class Console:
         while epavarma:
             self.konsoli_io.kirjoita("Kirjoita lähteen luokka:")
             tyyppi = self.konsoli_io.lue('=>').strip().lower()
+            if tyyppi == 'q':
+                return
             self.konsoli_io.kirjoita(f"Valittuna luokkana: {tyyppi}")
             required = self.forms.get_required(tyyppi)
-            if required is None:
+            if not required:
                 self.konsoli_io.kirjoita("Luokkaa ei tunnistettu, lisätäänkö se kuitenkin?")
-                confirmation = self.konsoli_io.lue('[Y/N]')
+                confirmation = self.konsoli_io.lue('[Y/N/Q]')
                 if confirmation.strip().upper() == "Y":
                     epavarma = False
+                elif confirmation.strip().upper() == "Q":
+                    return
             else:
                 optional = self.forms.get_optional(tyyppi)
                 epavarma = False
@@ -114,14 +111,23 @@ class Console:
             tiedot = [] # [{"key_value": "key_information"}]
 
             #Kysytään käyttäjältä konsolissa lähteen tiedot
+            #Aliohjelmat palauttavat False arvon, jos käyttäjä haluaa poistua toiminnasta
             self.konsoli_io.kirjoita(f"Alustetaan uusi {tyyppi}:")
             src_key = self.__ask_key()
+            if src_key is False:
+                return
+
             for field in required:
                 src_value = self.__ask_required(field)
+                if src_value is False:
+                    return
                 tiedot.append(src_value)
             for field in optional:
                 src_value = self.__ask_optional(field)
+                if src_value is False:
+                    return
                 tiedot.append(src_value)
+
             lisaa = True
             while lisaa:
                 self.konsoli_io.kirjoita("Lisää vapaa arvo? Jätä nimi tyhjäksi jos ei.")
@@ -130,6 +136,8 @@ class Console:
                 if src_type.strip() == "":
                     lisaa = False
                     break
+                if src_type.strip().upper() == 'Q':
+                    return
                 self.konsoli_io.kirjoita("Atribuutin sisältö:")
                 src_value = self.konsoli_io.lue('=>')
                 tiedot.append({"type": src_type, "value": src_value})
@@ -177,6 +185,8 @@ class Console:
                 self.konsoli_io.kirjoita("Syotetty avain on jo olemassa, lisää parempi")
             elif src_key.strip() == "":
                 self.konsoli_io.kirjoita("Syotetty avain on tyhjä, lisää parempi")
+            elif src_key.strip().upper() == 'Q':
+                return False
             else:
                 invalid = False
 
@@ -195,6 +205,8 @@ class Console:
 
             if src_value.strip() == "":
                 self.konsoli_io.kirjoita(f"Syotetty {tyyppi} on tyhjä, lisää parempi")
+            elif src_value.strip().upper() == 'Q':
+                return False
             else:
                 invalid = False
 
@@ -211,6 +223,8 @@ class Console:
         src_value = self.konsoli_io.lue('=> ')
         if src_value.strip() == "":
             return None
+        if src_value.strip().upper() == 'Q':
+            return False
 
         palautus["type"] = tyyppi
         palautus["value"] = src_value
@@ -221,6 +235,8 @@ class Console:
         """ Lisätään doin perusteella uusi lähde """
         self.konsoli_io.kirjoita("Syötä DOI")
         doi = self.konsoli_io.lue("=> ").strip()
+        if doi.upper() == 'Q':
+            return
         try:
             self.bib.add_doi(doi)
             self.konsoli_io.kirjoita("Lähde lisättiin onnistuneesti")
@@ -232,6 +248,8 @@ class Console:
         """ Lisätään acm linkin perusteella uusi lähde """
         self.konsoli_io.kirjoita("Syötä ACM linkki")
         url = self.konsoli_io.lue("=> ").strip()
+        if url.upper() == 'Q':
+            return
         try:
             self.bib.add_acm_link(url)
             self.konsoli_io.kirjoita("Lähde lisättiin onnistuneesti")
@@ -422,6 +440,9 @@ class Console:
             self.konsoli_io.kirjoita("Atribuutti ei voi olla tyhjä.")
             return
 
+        if attr.upper() == 'Q':
+            return
+
         # tarkistetaan, löytyykö attribuuttia yhtään
         if all(entry.get_value(attr) is None for entry in self.bib.get_all_entries()):
             self.konsoli_io.kirjoita(f"Atribuuttia '{attr}' ei löydy yhdeltäkään lähteeltä.")
@@ -452,9 +473,13 @@ class Console:
         value_type = self.konsoli_io.lue("=>")
         if value_type.strip() == "":
             value_type = None
+        elif value_type.strip().upper() == "Q":
+            return
 
         print("Anna hakusana:")
         search_term = self.konsoli_io.lue("=>")
+        if search_term.strip().upper() == "Q":
+            return
         found = self.bib.search(search_term, value_type)
         if len(found) == 0:
             self.konsoli_io.kirjoita(

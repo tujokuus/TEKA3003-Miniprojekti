@@ -208,3 +208,23 @@ class TestConsole(unittest.TestCase):
         self.assertTrue(
             any("Testi artikkeli" in out for out in stubio.outputs)
         )
+
+    def test_add_unknown_source(self):
+        stubio = StubIO(["A", "alskjdlajskl", "N", "Q", "Q"])
+        konsoli = console.Console(self.bib, stubio, self.json)
+        konsoli.activate()
+
+        phrase = "Luokkaa ei tunnistettu, lisätäänkö se kuitenkin?"
+
+        self.assertTrue(
+            any(phrase in out for out in stubio.outputs),
+        )
+
+    def test_quit_in_source_adding(self):
+        stubio = StubIO(["A", "book", "", "baa", "Luukas", "Q", "Q"])
+        konsoli = console.Console(self.bib, stubio, self.json)
+        konsoli.activate()
+
+        self.assertTrue(
+            any("Tallennetaan lähde" not in out for out in stubio.outputs),
+        )
